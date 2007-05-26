@@ -1,0 +1,14 @@
+Delete  from  Mide;
+Delete  from  Tiene_Medidor;
+Delete  from  Inyecta;
+Delete  from  come;
+Delete  from  Diagnostico;
+Delete  from  Padece;
+Delete  from  Vigila;
+Delete  from  Comidas;
+Delete  from  Diabetes;
+Delete  from  Insulina;
+Delete  from  Medidores;
+Delete  from  Medicos;
+Delete  from  usuarios;
+Delete  from  telefonos;

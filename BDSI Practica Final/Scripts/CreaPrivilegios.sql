@@ -1,0 +1,114 @@
+-- INICIALMENTE CREAMOS LOS USUARIOS
+
+create user PACIENTE_ANTONIO identified by toni
+default tablespace tabgrupo0711
+temporary tablespace temp
+quota unlimited on tabgrupo0711;
+commit;
+
+create user MEDICO_JUAN identified by montana
+default tablespace tabgrupo0711
+temporary tablespace temp
+quota unlimited on tabgrupo0711;
+commit;
+
+create user GESTOR_PEDRO identified by agua
+default tablespace tabgrupo0711
+temporary tablespace temp
+quota unlimited on tabgrupo0711;
+commit;
+
+create user ADMINISTRADOR_JUAN identified by omni
+default tablespace tabgrupo0711
+temporary tablespace temp
+quota unlimited on tabgrupo0711;
+commit;
+
+
+
+
+-- -------------------------------- A CONTINUACIÓN CREAMOS LOS ROLES.
+
+
+
+
+
+-- EL ROL PACIENTE TENDRA PRIVILEGIOS PARA CREAR, MODIFICAR Y CONSULTAR
+-- LOS DATOS REFERENTE A COMIDAS, INYECCIONES Y MEDICIONES UNICAMENTE.
+CREATE ROLE PACIENTE;
+grant create session TO PACIENTE;
+grant SELECT,UPDATE,INSERT on grupo0711.come to PACIENTE;
+grant SELECT,UPDATE,INSERT on grupo0711.inyecta to PACIENTE;
+grant SELECT,UPDATE,INSERT on grupo0711.mide to PACIENTE;
+commit;
+
+-- EL ROL MEDICO TENDRA PRIVILEGIOS PARA CREAR, MODIFICAR Y CONSULTAR LOS 
+-- DIAGNOSTICOS Y PARA CONSULTAR LAS COMIDAS, INYECCIONES Y MEDICIONES
+
+CREATE ROLE MEDICO;
+grant create session TO MEDICO;
+grant SELECT on grupo0711.come to MEDICO;
+grant SELECT on grupo0711.inyecta to MEDICO;
+grant SELECT on grupo0711.mide to MEDICO;
+grant SELECT, UPDATE, INSERT on grupo0711.Diagnostico to MEDICO;
+commit;
+
+-- EL ROL GESTOR_INFO PRIVILEGIOS PARA CREAR, MODIFICAR Y CONSULTAR SOBRE 
+-- LAS TABLAS USUARIOS
+-- MEDICOS, MEDIDORES, INSULINA, DIABETES, COMIDAS, VIGILA, PADECE Y TIENE 
+-- MEDIDOR.
+-- SIN EMBARGO NO TIENE ACCESO COMIDAS, INYECCIONES, MEDICIONES Y 
+-- DIAGNOSTICOS, POR
+-- SER DATOS DE CARACTER PRIVADO.
+
+CREATE ROLE GESTOR_INFO;
+grant create session to GESTOR_INFO;
+grant SELECT, UPDATE, INSERT on grupo0711.Usuarios to GESTOR_INFO;
+grant SELECT, UPDATE, INSERT on grupo0711.Medicos to GESTOR_INFO;
+grant SELECT, UPDATE, INSERT on grupo0711.Medidores to GESTOR_INFO;
+grant SELECT, UPDATE, INSERT on grupo0711.Insulina to GESTOR_INFO;
+grant SELECT, UPDATE, INSERT on grupo0711.Diabetes to GESTOR_INFO;
+grant SELECT, UPDATE, INSERT on grupo0711.Comidas to GESTOR_INFO;
+grant SELECT, UPDATE, INSERT on grupo0711.Vigila to GESTOR_INFO;
+grant SELECT, UPDATE, INSERT on grupo0711.Padece to GESTOR_INFO;
+grant SELECT, UPDATE, INSERT on grupo0711.Tiene_Medidor to GESTOR_INFO;
+commit;
+
+-- EL ROL ADMIN TIENE TODOS LOS PRIVILEGIOS SOBRE TODAS LAS TABLAS DE LA 
+-- PRACTICA.
+CREATE ROLE ADMIN_0711;
+GRANT CREATE SESSION TO ADMIN_0711;
+GRANT ALL ON GRUPO0711.Usuarios to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Medicos to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Medidores to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Usuarios to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Insulina to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Diabetes to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Comidas to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Vigila to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Padece to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Diagnostico to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Come to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Inyecta to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Tiene_Medidor to ADMIN_0711;
+GRANT ALL ON GRUPO0711.Mide to ADMIN_0711;
+commit;
+
+
+
+
+
+
+
+--   --------------------------------- FINALMENTE ASIGNAMOS ROLES A LOS 
+-- USUARIOS.
+
+
+
+
+
+GRANT PACIENTE TO PACIENTE_ANTONIO;
+GRANT MEDICO TO MEDICO_JUAN;
+GRANT GESTOR_INFO TO GESTOR_PEDRO;
+GRANT ADMIN_0711 TO ADMINISTRADOR_JUAN;
+commit;
