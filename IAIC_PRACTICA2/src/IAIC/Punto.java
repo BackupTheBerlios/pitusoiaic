@@ -10,6 +10,15 @@ public class Punto {
 		this.coordenadas=coordenadas;
 		this.numeros=lista;
 	}
+	
+	public Punto(int coordenadas){
+		this.coordenadas = coordenadas;
+		this.numeros = new double[coordenadas];
+		for (int i=0;i<coordenadas;i++){
+			numeros[i] = 0;
+		}
+	}
+	
 
 
 	public int getCoordenadas() {

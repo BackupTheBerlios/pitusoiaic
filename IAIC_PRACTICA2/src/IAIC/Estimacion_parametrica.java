@@ -35,8 +35,12 @@ public class Estimacion_parametrica implements Algoritmos{
 		Punto aux;
 		Matriz nueva;
 		for (int j=0;j<centros.get(i).muestras.size();j++)
-		{
-			
+		{			
+			/* Obtengo la matriz de restarle a cada coordenada de los puntos
+			 * contenidos en cada una de las restas la media previamente calculada.
+			 * Esa matriz la traspongo y la multiplico por ella misma.
+			 * Calculo la media de hacerlo con todos los puntos.
+			 */ 
 			aux=centros.get(i).muestras.get(j);
 			nueva=new Matriz(tamaño,1,aux.numeros,true);
 			resta1=nueva.resta(this.vector_aprendido.get(i).m);
