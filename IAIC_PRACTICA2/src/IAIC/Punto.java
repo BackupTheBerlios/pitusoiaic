@@ -103,6 +103,17 @@ public class Punto {
 
 	 }
 
+	public String toString()
+	{
+		String nueva = new String("(");
+		for (int i=0;i<this.coordenadas;i++)
+		{
+			if (i+1!=this.coordenadas) nueva+=this.numeros[i]+",";
+			else nueva+=this.numeros[i]+")";
+		}
+		return(nueva);
+	}
+	 
 
 	public double[] getNumeros() {
 		return numeros;

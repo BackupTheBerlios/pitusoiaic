@@ -4,10 +4,10 @@ import java.util.Vector;
 
 public class Clase {
 
-	Vector<Punto> muestras;
-	Punto centro;
+	public Vector<Punto> muestras;
+	public Punto centro;
 	
-	Clase()
+	public Clase()
 	{
 		muestras=new Vector<Punto> ();
 		centro=null;

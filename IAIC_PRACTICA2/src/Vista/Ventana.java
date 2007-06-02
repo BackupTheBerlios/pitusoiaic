@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.Vector;
 
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
@@ -25,6 +26,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.border.BevelBorder;
+
+import IAIC.Clase;
+import IAIC.Cuantizacion_vectorial;
+import IAIC.Estimacion_no_parametrica;
+import IAIC.Estimacion_parametrica;
+import IAIC.Lloyd;
+import IAIC.Punto;
+import IAIC.Self_Organizinig_Map;
 
 /**
  * Clase Ventana que es la aplicaion. Desde aqui se puede cargar el archivo
@@ -86,8 +95,22 @@ public class Ventana extends JFrame{
 	
 	private boolean aprendizaje;
 		
-	private static final long serialVersionUID = 1L;
+	private Vector<Clase> clases;
 
+	private Cuantizacion_vectorial algoritmo;
+	
+	private static final long serialVersionUID = 1L;
+	
+	private int situacion; //0 no se ha cargado archivo //1 se ha cargado archivo se debe de aprender //2 se puede preguntar
+
+	private Estimacion_parametrica parametrica;
+	
+	private Estimacion_no_parametrica no_parametrica;
+	
+	private Lloyd lloyd;
+	
+	private Self_Organizinig_Map sof;
+	
 	/**
 	 * Construvtor de la clase Ventana,
 	 * Aqui se crea la ventana de la aplicacion y se arranca desde aqui
@@ -97,6 +120,10 @@ public class Ventana extends JFrame{
 		super("Clasificador de puntos");
 		this.general=1;
 		this.nogeneral=1;
+		this.parametrica=new Estimacion_parametrica();
+		this.no_parametrica=new Estimacion_no_parametrica();
+		this.lloyd=new Lloyd();
+		this.sof=new  Self_Organizinig_Map(1.0, 0.8, 5, 0.001);
 		setLocation(100,100);
 		setSize(200,100);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -119,7 +146,8 @@ public class Ventana extends JFrame{
 		setJMenuBar(barraMenu);
 		fin=false;
 		solucion=true;
-		construirVista(false);
+		situacion=0;
+		construirVista(0);
 		this.setVisible(true);
 	}
 	/**
@@ -234,7 +262,7 @@ public class Ventana extends JFrame{
 							try {
 								comienzo();
 								fin=false;
-								construirVista(true);
+								construirVista(1);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -250,6 +278,35 @@ public class Ventana extends JFrame{
 	private void comienzo()  {
 		
 		// Se llama a cuantizacion vectorial
+		 double entrada1 []={200,160,120};
+		 double entrada2 []={90,130,60};
+		 double entrada3 []={210,170,130};
+		 double entrada4 []={35,25,46};
+		 double entrada5 []={215,172,133};
+		 double entrada6 []={92,138,54};
+		 double entrada7 []={87,128,66};
+		 double entrada8 []={41,22,37};
+		 Punto uno = new Punto(3,entrada1);
+		 Punto dos = new Punto(3,entrada2);
+		 Punto tres = new Punto(3,entrada3);
+		 Punto cuatro = new Punto(3,entrada4);
+		 Punto cinco = new Punto(3,entrada5);
+		 Punto seis = new Punto(3,entrada6);
+		 Punto siete = new Punto(3,entrada7);
+		 Punto ocho = new Punto(3,entrada8);
+		 Vector<Punto> aux= new Vector<Punto> ();
+		 aux.add(uno);
+		 aux.add(dos);
+		 aux.add(tres);
+		 aux.add(cuatro);
+		 aux.add(cinco);
+		 aux.add(seis);
+		 aux.add(siete);
+		 aux.add(ocho);
+		 this.algoritmo= new Cuantizacion_vectorial(20);
+		 algoritmo.calcula(aux);
+		 clases=algoritmo.getCentros();
+		 this.situacion=1;
 	}
 	
 	/**
@@ -271,6 +328,7 @@ public class Ventana extends JFrame{
 		actualiza(false);
 		//estadoinicial.EstadoInicial();
 		//this.estado=estadoinicial;
+		this.situacion=0;
 		return(true);
 	}
 	
@@ -351,53 +409,73 @@ public class Ventana extends JFrame{
 	
 	/**
 	 * Metodo que construye la vista
-	 * @param comienza un booleano que indica la informacion que debe presentar
+	 * @param i un booleano que indica la informacion que debe presentar
 	 */
-	public void construirVista(final boolean comienza) {
+	public void construirVista(final int i) {
 		_panelSur.removeAll();
+		System.out.println(this.situacion+" SIT");
 		_panelCentral.removeAll();
 		JButton boton= null;
-		if (comienza) boton = new JButton("APRENDER");
-		else boton = new JButton("PREGUNTAR");
+		if (i==1 ) boton = new JButton("APRENDER");
+		else  if (i==2)boton = new JButton("PREGUNTAR");
+		else  if (i==0)boton = new JButton("APRENDER");
 		JPanel centro = new JPanel();
 		JPanel sur = new JPanel();
 		boton.addActionListener(
 				new ActionListener () {
 					public void actionPerformed(ActionEvent evento) {
-						if (comienza)
+						if (i==1)
 						{
+						aprender();
 						limpia();
 						siguiente();
-						problema();
-						actualiza(true);
-						repaint();
+						
+						}
+						else if (i==2)
+						{
+							System.out.println("VENTANA EMERGENTE");
 						}
 					}
+
+
+
 				}
 		);
 		
-		this.texto = new JTextArea("SOLUCION \n \n");
+		this.texto = new JTextArea("CLASES CALCULADAS \n \n");
 		centro.add(this.texto);
-		sur.add(boton);
+		if (boton!=null) sur.add(boton);
 		this._panelCentral.add(this.texto);
 		this._panelSur.add(boton);
 		//_panelESTE.removeAll();
-		if (!comienza) this.texto.append("INTRUCCIONES GENERALES \n 1.Elegir una estrategia general \n 2.Elegir el archivo de donde se lee las habitaciones \n 3.Antes de dar al boton seguir elegir la estrategia \n elegida para el problema de cada habitacion");
+		if (this.situacion==2) this.texto.append(this.algoritmo.toString());
+		if (this.situacion==0) this.texto.append("INTRUCCIONES GENERALES \n 1.Elegir una estrategia general \n 2.Elegir el archivo de donde se lee las habitaciones \n 3.Antes de dar al boton seguir elegir la estrategia \n elegida para el problema de cada habitacion");
 		repaint();
 		setVisible(true);
 		
 	}
 	
-	/**
-	 * Metodo que limpia el Panel Central
-	 */
 	private void limpia() {
 		_panelCentral.removeAll();
 		JPanel centro = new JPanel();
 		centro.add(this.texto);
-		this.texto = new JTextArea(estragias()+"\n SOLUCION \n ");
+		this.texto = new JTextArea("CLASES CALCULADASSSSSSSS \n \n");
+		if (this.situacion==2) this.texto.append(this.algoritmo.toString());
 		this._panelCentral.add(this.texto);
+		System.out.println("SE Aprendessssssssssssssss");
+		construirVista(this.situacion);
 		
+	}
+	
+	private void aprender() {
+		
+		this.situacion=2;
+		System.out.println(this.situacion);
+		this.parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
+		//this.no_parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
+		this.lloyd.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
+		this.sof.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
+		System.out.println("SE Aprende");
 	}
 	
 	private String estragias() {

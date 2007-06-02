@@ -92,8 +92,34 @@ public class Cuantizacion_vectorial {
 		 aux.add(ocho);
 		 Cuantizacion_vectorial algoritmo= new Cuantizacion_vectorial(20);
 		 algoritmo.calcula(aux);
-		 System.out.println(uno.distancia(dos));
+		 System.out.println(algoritmo.toString());
 		 
 
 	 }
+
+	public String toString()
+	{
+		String nueva= new String("\n");
+		for (int i=0;i<this.clases;i++)
+		{
+			nueva+="CLASE "+(i+1)+" : REPRENSENTANTE "+this.centros.get(i).centro.toString()+"\n";
+		}
+		return nueva;
+	}
+	 
+	public Vector<Clase> getCentros() {
+		return centros;
+	}
+
+	public void setCentros(Vector<Clase> centros) {
+		this.centros = centros;
+	}
+
+	public int getClases() {
+		return clases;
+	}
+
+	public void setClases(int clases) {
+		this.clases = clases;
+	}
 }

@@ -190,4 +190,12 @@ public class Estimacion_parametrica implements Algoritmos{
 		 
 
 	 }
+
+	public LinkedList<ConjuntoM_C> getVector_aprendido() {
+		return vector_aprendido;
+	}
+
+	public void setVector_aprendido(LinkedList<ConjuntoM_C> vector_aprendido) {
+		this.vector_aprendido = vector_aprendido;
+	}
 }
