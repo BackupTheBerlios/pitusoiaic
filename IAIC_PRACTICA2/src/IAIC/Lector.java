@@ -10,12 +10,15 @@ import java.io.IOException;
 import java.util.Vector;
 
 /**
+ * Clase que se encarga de leer de los ficheros, pasa la información
+ * contenida en estos a información utilizada por el programa.
  * @author Luis
  *
  */
 public class Lector {
 
 	private static final char CHAR_SEPARADOR = ';';
+	
 	
 	/**
 	 * Método que devuelve un vector con los puntos contenidos en el
@@ -65,7 +68,11 @@ public class Lector {
 	}
 	
 	
-	
+	/**
+	 * Método principal de la clase, para pruebas.
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main (String args[]) throws Exception{		
 		Lector.leer("fichero.txt");
 	}
