@@ -1,0 +1,13 @@
+El formato de fichero es el siguiente, en la primera línea se 
+especifica la dimensión que van a tener los puntos. En las líneas 
+siguientes en cada línea se pone un punto, poniendo las coordenadas
+separadas únicamente por ';' (punto y coma), poniendo punto y coma
+después de la última también.
+
+Ejemplo de fichero.
+
+3
+15;15.0123;156;
+156.156;56.4156;4156;
+456;456;123.489;
+789;12;89;
