@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -22,9 +23,13 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import IAIC.Clase;
@@ -434,13 +439,12 @@ public class Ventana extends JFrame{
 						else if (i==2)
 						{
 							System.out.println("VENTANA EMERGENTE");
+							aux();
 						}
 					}
-
-
-
 				}
 		);
+		
 		
 		this.texto = new JTextArea("CLASES CALCULADAS \n \n");
 		centro.add(this.texto);
@@ -454,6 +458,103 @@ public class Ventana extends JFrame{
 		setVisible(true);
 		
 	}
+	
+	private void aux() {
+		
+		JPanel panel = new JPanel (new GridLayout(1,2,10,1));
+		//ButtonGroup tipoTablero = new ButtonGroup();
+		//JRadioButton tabRegular = new JRadioButton ("Tablero regular", true);
+		//JRadioButton tabIrregular = new JRadioButton ("Tablero irregular", false);
+		//JTextField campoFilas = new JTextField ("10",2);
+		JTextField punto = new JTextField ("10",1);
+		//final JTextField campoColumnas = new JTextField ("10",2);
+		//JLabel etiqFilas = new JLabel ("Número de filas:",SwingConstants.RIGHT);
+		JLabel etiqpunto = new JLabel (" Punto:",SwingConstants.RIGHT);
+		//final JLabel etiqColumnas = new JLabel ("Número de columnas:",SwingConstants.RIGHT);
+		/*tabRegular.addActionListener(
+				new ActionListener() {
+					public void actionPerformed (ActionEvent evento) {
+						campoColumnas.setEnabled(true);
+						etiqColumnas.setEnabled(true);
+					}
+				}
+		);
+		tabIrregular.addActionListener(
+				new ActionListener() {
+					public void actionPerformed (ActionEvent evento) {
+						campoColumnas.setEnabled(false);
+						etiqColumnas.setEnabled(false);
+					}
+				}
+		);*/
+		//tipoTablero.add(tabRegular);
+		//tipoTablero.add(tabIrregular);
+		//panel.add(tabRegular);
+		//panel.add(etiqFilas);
+		//panel.add(campoFilas);
+		//panel.add(tabIrregular);
+		//panel.add(etiqColumnas);
+		//panel.add(campoColumnas);
+		panel.add(etiqpunto);
+		panel.add(punto);
+		validarPeticion (panel,punto );
+		
+		/*// TODO Auto-generated method stub
+		JFrame ventana = new JFrame("INTRODUCE PUNTOS");
+		setLocation(100,100);
+		setSize(200,100);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		establecerCierre();*/
+		/*_panelCentral=new JPanel();
+		_panelNorte=new JPanel();
+		_panelEste=new JPanel();
+		_panelSur=new JPanel();
+		_panelOeste=new JPanel();
+		add(_panelCentral, BorderLayout.CENTER);
+		add(_panelNorte, BorderLayout.NORTH);
+		add(_panelSur, BorderLayout.SOUTH);
+		add(_panelEste, BorderLayout.EAST);
+		add(_panelOeste, BorderLayout.WEST);*/
+		//configurarPanelNorte();
+		//configurarPaneEste();
+		//setJMenuBar(barraMenu);
+		/*fin=false;
+		solucion=true;
+		//situacion=0;
+		//construirVista(0);
+		ventana.setVisible(true);*/
+	}
+	
+	//private void validarPeticion (JPanel panel, JRadioButton tabRegular, JRadioButton tabIrregular, JTextField campoFilas, JTextField campoColumnas) {
+	private void validarPeticion (JPanel panel,JTextField punto) {
+		boolean valido=false;
+		int filas=0;
+		int columnas=0;
+		Object[] opciones = {"Preguntar", "Cancelar"};
+		int opcion=0;
+		while (!valido) {
+			try {
+				opcion=JOptionPane.showOptionDialog(this,panel,"Datos del Punto",JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,null,opciones,opciones[0]);
+				if (opcion==0) {
+					String cadena=punto.getText();
+						if (valida(cadena)) valido=true;
+					if (!valido) JOptionPane.showMessageDialog(this,"El punto introduce no tiene suficientes o demasiado componentes","Error en los datos",JOptionPane.ERROR_MESSAGE,null);
+				}
+				else valido=true;
+			}
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(this,"Compruebe los valores introducidos","Error en los datos",JOptionPane.ERROR_MESSAGE,null);
+			} 
+		}
+		//if (opcion==0) _controlador.crearTablero(tabRegular.isSelected(),filas,columnas);
+	}
+	
+	public boolean valida(String cadena)
+	{
+		boolean valido=false;
+		return(valido);
+	}
+	
 	
 	private void limpia() {
 		_panelCentral.removeAll();
