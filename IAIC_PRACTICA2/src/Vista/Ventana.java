@@ -17,6 +17,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -461,15 +462,25 @@ public class Ventana extends JFrame{
 	
 	private void aux() {
 		
-		JPanel panel = new JPanel (new GridLayout(1,2,10,1));
-		//ButtonGroup tipoTablero = new ButtonGroup();
+		JPanel panel = new JPanel (new GridLayout(4,1,10,1));
+		ButtonGroup tipoEstrategia = new ButtonGroup();
+	    JComboBox combo = new JComboBox();
+	    combo.addItem("Estimacion_no_parametrica");
+	    combo.addItem("Estimacion Parametrica");
+	    combo.addItem("Algoritmo de Lloyd");
+	    combo.addItem("Self Organizing Map");
+	    
+	    //for( int i=0; i < 100; i++ )
+	    //  combo.addItem( Integer.toString( i ) );
+	    
 		//JRadioButton tabRegular = new JRadioButton ("Tablero regular", true);
 		//JRadioButton tabIrregular = new JRadioButton ("Tablero irregular", false);
 		//JTextField campoFilas = new JTextField ("10",2);
-		JTextField punto = new JTextField ("10",1);
+		JTextField punto = new JTextField ("",1);
 		//final JTextField campoColumnas = new JTextField ("10",2);
 		//JLabel etiqFilas = new JLabel ("Número de filas:",SwingConstants.RIGHT);
-		JLabel etiqpunto = new JLabel (" Punto:",SwingConstants.RIGHT);
+		JLabel etiqpunto = new JLabel (" Punto:",SwingConstants.CENTER);
+		JLabel estrateg = new JLabel (" Estrategia:",SwingConstants.CENTER);
 		//final JLabel etiqColumnas = new JLabel ("Número de columnas:",SwingConstants.RIGHT);
 		/*tabRegular.addActionListener(
 				new ActionListener() {
@@ -497,7 +508,9 @@ public class Ventana extends JFrame{
 		//panel.add(campoColumnas);
 		panel.add(etiqpunto);
 		panel.add(punto);
-		validarPeticion (panel,punto );
+		panel.add(estrateg);
+		panel.add(combo);
+		validarPeticion (panel,punto,combo);
 		
 		/*// TODO Auto-generated method stub
 		JFrame ventana = new JFrame("INTRODUCE PUNTOS");
@@ -526,7 +539,7 @@ public class Ventana extends JFrame{
 	}
 	
 	//private void validarPeticion (JPanel panel, JRadioButton tabRegular, JRadioButton tabIrregular, JTextField campoFilas, JTextField campoColumnas) {
-	private void validarPeticion (JPanel panel,JTextField punto) {
+	private void validarPeticion (JPanel panel,JTextField punto, JComboBox combo) {
 		boolean valido=false;
 		int filas=0;
 		int columnas=0;
@@ -546,6 +559,8 @@ public class Ventana extends JFrame{
 				JOptionPane.showMessageDialog(this,"Compruebe los valores introducidos","Error en los datos",JOptionPane.ERROR_MESSAGE,null);
 			} 
 		}
+		String estrategia=(String)combo.getSelectedItem();
+		System.out.println("ESTRATEGIA"+estrategia);
 		//if (opcion==0) _controlador.crearTablero(tabRegular.isSelected(),filas,columnas);
 	}
 	
