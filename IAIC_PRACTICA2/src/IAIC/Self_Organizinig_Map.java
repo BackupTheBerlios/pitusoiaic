@@ -104,7 +104,11 @@ public class Self_Organizinig_Map implements Algoritmos {
 			else
 			{
 				aux=centros.get(i).distancia(punto);
-				if (aux<distancia_min) clase=i;
+				if (aux<distancia_min) 
+					{
+					distancia_min=aux;
+					clase=i;
+					}
 			}
 		}
 		return clase;

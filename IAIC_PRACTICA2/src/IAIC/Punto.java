@@ -99,6 +99,7 @@ public class Punto {
 		 Punto uno = new Punto(3,entrada1);
 		 Punto dos = new Punto(3,entrada2);
 		 System.out.println(uno.distancia(dos));
+		 System.out.println(uno.stringVentana());
 		 
 
 	 }
@@ -131,5 +132,13 @@ public class Punto {
 			nuevo[i]=this.numeros[i];
 		Punto aux = new Punto(this.coordenadas,nuevo);
 		return(aux);
+	}
+
+	public String stringVentana() {
+		String aux = new String("(0");
+		for (int i=1;i<this.coordenadas;i++)
+			aux+=",0";
+		aux+=")";
+		return aux;
 	}
 }

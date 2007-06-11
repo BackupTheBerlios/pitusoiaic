@@ -186,7 +186,7 @@ public class Estimacion_parametrica implements Algoritmos{
 		Estimacion_parametrica prueba = new Estimacion_parametrica();
 		prueba.Aprendizaje(2, centros);
 		System.out.println(uno.distancia(dos));
-		System.out.println("RESULTADO "+prueba.clase(uno));
+		System.out.println("RESULTADO "+prueba.clase(ocho));
 		 
 
 	 }

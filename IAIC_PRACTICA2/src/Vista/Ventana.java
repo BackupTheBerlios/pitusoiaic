@@ -37,6 +37,7 @@ import IAIC.Clase;
 import IAIC.Cuantizacion_vectorial;
 import IAIC.Estimacion_no_parametrica;
 import IAIC.Estimacion_parametrica;
+import IAIC.Lector;
 import IAIC.Lloyd;
 import IAIC.Punto;
 import IAIC.Self_Organizinig_Map;
@@ -117,6 +118,12 @@ public class Ventana extends JFrame{
 	
 	private Self_Organizinig_Map sof;
 	
+	private Punto preguntado;
+	
+	private Vector<Punto> puntos;
+	
+	private String respuesta;
+	
 	/**
 	 * Construvtor de la clase Ventana,
 	 * Aqui se crea la ventana de la aplicacion y se arranca desde aqui
@@ -153,6 +160,8 @@ public class Ventana extends JFrame{
 		fin=false;
 		solucion=true;
 		situacion=0;
+		this.respuesta= new String();
+		preguntado=null;
 		construirVista(0);
 		this.setVisible(true);
 	}
@@ -284,7 +293,8 @@ public class Ventana extends JFrame{
 	private void comienzo()  {
 		
 		// Se llama a cuantizacion vectorial
-		 double entrada1 []={200,160,120};
+		
+		 /*double entrada1 []={200,160,120};
 		 double entrada2 []={90,130,60};
 		 double entrada3 []={210,170,130};
 		 double entrada4 []={35,25,46};
@@ -308,8 +318,48 @@ public class Ventana extends JFrame{
 		 aux.add(cinco);
 		 aux.add(seis);
 		 aux.add(siete);
+		 aux.add(ocho);*/
+		double entrada2 []={1,0,0};
+		 double entrada3 []={0,0,0};
+		 double entrada4 []={1,1,0};
+		 double entrada5 []={1,0,1};
+		 double entrada6 []={0,0,1};
+		 double entrada7 []={0,1,1};
+		 double entrada8 []={0,1,0};
+		 double entrada1 []={1,1,1};
+		 Punto uno = new Punto(3,entrada1);
+		 Punto dos = new Punto(3,entrada2);
+		 Punto tres = new Punto(3,entrada3);
+		 Punto cuatro = new Punto(3,entrada4);
+		 Punto cinco = new Punto(3,entrada5);
+		 Punto seis = new Punto(3,entrada6);
+		 Punto siete = new Punto(3,entrada7);
+		 Punto ocho = new Punto(3,entrada8);
+		 Vector<Punto> aux= new Vector<Punto> ();
+		Vector<Clase> centros = new Vector<Clase>();
+		Clase c1 = new Clase();
+		c1.centro=dos;
+		c1.muestras.add(dos);
+		c1.muestras.add(tres);
+		c1.muestras.add(cuatro);
+		c1.muestras.add(cinco);
+		Clase c2 = new Clase();
+		c2.centro=seis;
+		c2.muestras.add(seis);
+		c2.muestras.add(siete);
+		c2.muestras.add(ocho);
+		c2.muestras.add(uno);
+		centros.add(c1);
+		centros.add(c2);
+		 aux.add(uno);
+		 aux.add(dos);
+		 aux.add(tres);
+		 aux.add(cuatro);
+		 aux.add(cinco);
+		 aux.add(seis);
+		 aux.add(siete);
 		 aux.add(ocho);
-		 this.algoritmo= new Cuantizacion_vectorial(20);
+		 this.algoritmo= new Cuantizacion_vectorial(1.25);
 		 algoritmo.calcula(aux);
 		 clases=algoritmo.getCentros();
 		 this.situacion=1;
@@ -322,10 +372,10 @@ public class Ventana extends JFrame{
 	 */
 	private boolean cargar (File archivoS)
 	{
-		//--------El letor de archivos
-		//EstadoLaberinto estadoinicial;
+		
+		//Lector lector;
 		try {
-		//	estadoinicial = new EstadoLaberinto(Lector.leerFichero(archivoS));
+		//puntos= lector.leer(archivoS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -441,6 +491,7 @@ public class Ventana extends JFrame{
 						{
 							System.out.println("VENTANA EMERGENTE");
 							aux();
+							
 						}
 					}
 				}
@@ -453,13 +504,47 @@ public class Ventana extends JFrame{
 		this._panelCentral.add(this.texto);
 		this._panelSur.add(boton);
 		//_panelESTE.removeAll();
-		if (this.situacion==2) this.texto.append(this.algoritmo.toString());
+		System.out.println("SITUACION "+this.situacion);
+		if (this.situacion==2) this.texto.append(this.algoritmo.toString()+this.respuesta);
 		if (this.situacion==0) this.texto.append("INTRUCCIONES GENERALES \n 1.Elegir una estrategia general \n 2.Elegir el archivo de donde se lee las habitaciones \n 3.Antes de dar al boton seguir elegir la estrategia \n elegida para el problema de cada habitacion");
 		repaint();
 		setVisible(true);
 		
 	}
 	
+	protected void nuevo_texto(String estrategia) {
+	
+		this.respuesta= new String();
+		int clase =0;
+		System.out.println(this.situacion);
+		/*this.parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
+		//this.no_parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
+		this.lloyd.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
+		this.sof.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());*/
+		
+		if (estrategia.equalsIgnoreCase("Estimacion_no_parametrica"))
+		{
+			clase=this.no_parametrica.clase(this.preguntado);
+			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
+		}
+		else if (estrategia.equalsIgnoreCase("Estimacion Parametrica"))
+		{
+			clase=this.parametrica.clase(this.preguntado);
+			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
+		}
+		else if (estrategia.equalsIgnoreCase("Algoritmo de Lloyd"))
+		{
+			clase=this.lloyd.clase(this.preguntado);
+			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
+		}
+		else if (estrategia.equalsIgnoreCase("Self Organizing Map"))
+		{
+			clase=this.sof.clase(this.preguntado);
+			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
+		}
+		System.out.println(this.respuesta);
+		
+	}
 	private void aux() {
 		
 		JPanel panel = new JPanel (new GridLayout(4,1,10,1));
@@ -476,7 +561,8 @@ public class Ventana extends JFrame{
 		//JRadioButton tabRegular = new JRadioButton ("Tablero regular", true);
 		//JRadioButton tabIrregular = new JRadioButton ("Tablero irregular", false);
 		//JTextField campoFilas = new JTextField ("10",2);
-		JTextField punto = new JTextField ("",1);
+	    String puntotxt= this.clases.get(0).centro.stringVentana();
+		JTextField punto = new JTextField (puntotxt,1);
 		//final JTextField campoColumnas = new JTextField ("10",2);
 		//JLabel etiqFilas = new JLabel ("Número de filas:",SwingConstants.RIGHT);
 		JLabel etiqpunto = new JLabel (" Punto:",SwingConstants.CENTER);
@@ -536,6 +622,7 @@ public class Ventana extends JFrame{
 		//situacion=0;
 		//construirVista(0);
 		ventana.setVisible(true);*/
+		construirVista(this.situacion);
 	}
 	
 	//private void validarPeticion (JPanel panel, JRadioButton tabRegular, JRadioButton tabIrregular, JTextField campoFilas, JTextField campoColumnas) {
@@ -549,6 +636,7 @@ public class Ventana extends JFrame{
 			try {
 				opcion=JOptionPane.showOptionDialog(this,panel,"Datos del Punto",JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,null,opciones,opciones[0]);
 				if (opcion==0) {
+					System.out.println("LLEGA");
 					String cadena=punto.getText();
 						if (valida(cadena)) valido=true;
 					if (!valido) JOptionPane.showMessageDialog(this,"El punto introduce no tiene suficientes o demasiado componentes","Error en los datos",JOptionPane.ERROR_MESSAGE,null);
@@ -560,17 +648,109 @@ public class Ventana extends JFrame{
 			} 
 		}
 		String estrategia=(String)combo.getSelectedItem();
+		
 		System.out.println("ESTRATEGIA"+estrategia);
-		//if (opcion==0) _controlador.crearTablero(tabRegular.isSelected(),filas,columnas);
+		if (opcion==0) nuevo_texto(estrategia);
 	}
 	
 	public boolean valida(String cadena)
 	{
+		System.out.println("LLEGA2");
+		System.out.println(cadena);
 		boolean valido=false;
-		return(valido);
+		boolean error= false;
+		int caso=0;
+		double numero=0;
+		double potencia=0;
+		int indice=0;
+		char letra;
+		this.preguntado= new Punto(this.clases.get(0).getCentro().getCoordenadas());
+		char aux []= cadena.toCharArray();
+		for (int i=0;((i<cadena.length() )&&(!error));i++)
+		{
+			letra=aux[i];
+			switch (caso)
+			{
+			case 0:
+			{
+				if (aux[i]=='(') caso=1;
+			}
+			break;
+			case 1:
+			{
+				potencia=1;
+				numero=0;
+				if ((aux[i]<='9') &&(aux[i]>='0')) 
+				{
+					numero+=pasaentero(aux[i]);
+					caso=2;
+				}
+				else error=true;
+			}break;
+			case 2:
+			{
+				if ((aux[i]<='9') &&(aux[i]>='0')) 
+				{
+					potencia*=10;
+					numero*=potencia;
+					numero+=pasaentero(aux[i]);
+				}
+				else if (aux[i]==',') 
+				{
+					caso=1;
+					this.preguntado.getNumeros()[indice]=numero;
+					indice++;
+				}
+				else if (aux[i]=='.') 
+					{caso=3;
+					potencia=1;
+				}
+				else if (aux[i]==')')
+				{
+					this.preguntado.getNumeros()[indice]=numero;
+					indice++;
+				}
+				else error=true;
+			}break;
+			case 3:
+			{
+				if ((aux[i]<='9') &&(aux[i]>='0')) 
+				{
+					potencia/=10;
+					numero+=pasaentero(aux[i])*potencia;
+				}
+				else if (aux[i]==',') 
+				{
+					caso=1;
+					this.preguntado.getNumeros()[indice]=numero;
+					indice++;
+				}
+				else error=true;
+			}break;
+			}
+		}
+		System.out.println(this.preguntado.toString());
+		if (indice==this.preguntado.getCoordenadas()) return(true);
+		else return(false);
 	}
 	
 	
+	private float pasaentero(char c) {
+		switch (c)
+		{
+		case '0':return 0;
+		case '1':return 1;
+		case '2':return 2;
+		case '3':return 3;
+		case '4':return 4;
+		case '5':return 5;
+		case '6':return 6;
+		case '7':return 7;
+		case '8':return 8;
+		case '9':return 9;
+		}
+		return 0;
+	}
 	private void limpia() {
 		_panelCentral.removeAll();
 		JPanel centro = new JPanel();
@@ -688,7 +868,8 @@ public class Ventana extends JFrame{
 	 */
 	 public static void main(String[] arg)
 	 {
-	 new Ventana();
+	 Ventana aux =new Ventana();
+	 //aux.valida(new String("(55.89,10,0.01)"));
 
 	 }
 
