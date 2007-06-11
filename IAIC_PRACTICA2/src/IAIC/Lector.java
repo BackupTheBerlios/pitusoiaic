@@ -4,6 +4,7 @@
 package IAIC;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,12 +27,12 @@ public class Lector {
 	 * @param Ruta Ruta donde se encuentra el fichero con los puntos.
 	 * @return Vector<Punto> Vector con los puntos.
 	 */
-	public static Vector<Punto> leer(String Ruta){
+	public static Vector<Punto> leer(File ffichero){
 		BufferedReader buffer;
 		Vector<Punto> v_puntos = new Vector<Punto>();
 		int tamano_puntos;
 		try {
-			buffer = new BufferedReader(new FileReader (Ruta));
+			buffer = new BufferedReader(new FileReader (ffichero));
 		} catch (FileNotFoundException e) {			
 			System.out.println("Error, no se encuentra el fichero");
 			System.exit(-1);	
@@ -74,6 +75,6 @@ public class Lector {
 	 * @throws Exception
 	 */
 	public static void main (String args[]) throws Exception{		
-		Lector.leer("fichero.txt");
+		Lector.leer(new File("fichero.txt"));
 	}
 }
