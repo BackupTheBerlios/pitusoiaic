@@ -51,7 +51,6 @@ public class Self_Organizinig_Map implements Algoritmos {
 				vecindad=calcula_vecindad(muestras.get(j),centros.get(k),alpha);
 				if (vecindad>this.T)
 				{
-					Punto aux= new Punto(centros.get(0).coordenadas,centros.get(0).numeros);
 					Punto resta=muestras.get(j).resta(centros.get(k));
 					resta.multiplica(vecindad*razonaprendidaje);
 					resta=resta.suma(centros.get(k));

@@ -68,39 +68,9 @@ public class Ventana extends JFrame{
 	 */
 	private JPanel _panelSur;
 	/**
-	 * Atributo que es una etiqueta con el numero de habitacion actual
-	 */
-	private JLabel _habitacion;
-	/**
-	 * Atributo que es una etiqueta para el numero nodos abiertos.
-	 */
-	private JLabel _numabiertos;
-	/**
-	 * Atributo que es una etiqueta para el numero de nodos cerrados.
-	 */
-	private JLabel _numcerrados;
-	/**
 	 * Atributo que es un campo de texto por donde se muestra la informacion
 	 */
 	private JTextArea texto;
-	/**
-	 * Atributo que indica si se ha llegado al final de la resolucion del problema
-	 */
-	private boolean fin;
-	/**
-	 * Atributo que indica la estrategia general
-	 */
-	private int general;
-	/**
-	 * Atributo que indica la estrategia nogeneral
-	 */
-	private int nogeneral;
-	/**
-	 * Atributo que indica si se ha llegado a la solucion
-	 */
-	private boolean solucion;
-	
-	private boolean aprendizaje;
 		
 	private Vector<Clase> clases;
 
@@ -120,8 +90,6 @@ public class Ventana extends JFrame{
 	
 	private Punto preguntado;
 	
-	private Vector<Punto> puntos;
-	
 	private String respuesta;
 	
 	/**
@@ -131,8 +99,6 @@ public class Ventana extends JFrame{
 	public Ventana()
 	{
 		super("Clasificador de puntos");
-		this.general=1;
-		this.nogeneral=1;
 		this.parametrica=new Estimacion_parametrica();
 		this.no_parametrica=new Estimacion_no_parametrica();
 		this.lloyd=new Lloyd();
@@ -157,8 +123,6 @@ public class Ventana extends JFrame{
 		configurarPanelNorte();
 		configurarPaneEste();
 		setJMenuBar(barraMenu);
-		fin=false;
-		solucion=true;
 		situacion=0;
 		this.respuesta= new String();
 		preguntado=null;
@@ -193,33 +157,9 @@ public class Ventana extends JFrame{
 	 */
 	public void configurarMenu (JMenuBar barraMenu) {
 		JMenu menuArchivo = new JMenu("Archivo");
-		JMenu menuEstrategia = new JMenu("Eleccion de Estrategia ");
 		configurarMenuArchivo(menuArchivo);
-		configurarMenuEstrategia(menuEstrategia);
 		barraMenu.add(menuArchivo);
-		barraMenu.add(menuEstrategia);
 		barraMenu.setVisible(true);
-	}
-	/**
-	 * Metodo que configura el menu de estrategias tanto para las generales como las no generales
-	 * @param menuEstrategia elemento de la clase Jmenu donde se añaden las cosas
-	 * @param opcion booleano para distinguir entre la estrategia global y la no global
-	 */
-	private void configurarMenuEstrategia(JMenu menuEstrategia) {
-		menuEstrategia.setToolTipText("Menú Estrategia: AEstrella - BusquedaVoraz - CosteUniforme - EscaladaMaxima - EscaladaSimple - PrimeroAnchura -PrimeroProfundidad");
-		menuEstrategia.setMnemonic('A');
-		JMenuItem estrategia1 = new JMenuItem ("Estimacion_no_parametrica", 'G'); 
-		JMenuItem estrategia2 = new JMenuItem ("Estimacion Parametrica", 'G'); 
-		JMenuItem estrategia3 = new JMenuItem ("Algoritmo de Lloyd", 'G'); 
-		JMenuItem estrategia4 = new JMenuItem ("Self Organizing Map", 'G'); 
-		menuEstrategia.add(estrategia1);
-		menuEstrategia.add(estrategia2);
-		menuEstrategia.add(estrategia3);
-		menuEstrategia.add(estrategia4);
-		establecerOyenteEstrategia(estrategia1,1);
-		establecerOyenteEstrategia(estrategia2,2);
-		establecerOyenteEstrategia(estrategia3,3);
-		establecerOyenteEstrategia(estrategia4,4);
 	}
 	/**
 	 * Metodo que configura el menu de cargar
@@ -233,32 +173,12 @@ public class Ventana extends JFrame{
 		menuArchivo.add(opcionCargar);
 		establecerOyenteCargar(opcionCargar);
 	}
-	
-	/**
-	 * Metodo para establecer el oyente de la eleccion de la estrategia
-	 * @param opcionNuevo elemento de la clase AbstarctButton que es el boton
-	 * @param a entero que indica la estrategia
-	 * @param opcion booleano para distinguir entre las estrategias
-	 */
-	private void establecerOyenteEstrategia(AbstractButton opcionNuevo,final int a) {
-		//Estrategia(true);
-	opcionNuevo.addActionListener(
-				new ActionListener () {
-					public void actionPerformed (ActionEvent evento) {
-						establecer(a);
-					}
-				}
-		);
-	}
 
 	/**
 	 * Metodo que establece la estrategia
 	 * @param numero un entero que indica la estrategia
 	 * @param opcion un booleano que indica si es general o no lo es
 	 */
-	private void establecer(int numero) {
-		this.general=numero;	;
-	}
 	/**
 	 * Metodo para establecer el oyente del boton cuando se desea cargar un juego.
 	 * @param opcionCargar es el boton que se configura como oyente.
@@ -276,7 +196,6 @@ public class Ventana extends JFrame{
 							{
 							try {
 								comienzo();
-								fin=false;
 								construirVista(1);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
@@ -381,7 +300,6 @@ public class Ventana extends JFrame{
 			e.printStackTrace();
 			return(false);
 		}
-		actualiza(false);
 		//estadoinicial.EstadoInicial();
 		//this.estado=estadoinicial;
 		this.situacion=0;
@@ -421,48 +339,7 @@ public class Ventana extends JFrame{
 	 * Metodo que actualiza los valores del Panel Este
 	 * @param opcion un booleano que indica el tipo de acrualizacion
 	 */
-	public void actualiza(boolean opcion)
-	{
-	/*if (opcion)
-	{
-	this._habitacion.setText("  Habitacion: "+numeroHabitacion()+"  ");
-	this._numabiertos.setText("  Abiertos: "+numeroAbiertos()+"  ");
-	this._numcerrados.setText("  Cerrados: "+numeroCerrados()+"  ");
-	}
-	else
-	{
-		this._habitacion.setText("  Habitacion: "+0+"  ");
-		this._numabiertos.setText("  Abiertos: "+0+"  ");
-		this._numcerrados.setText("  Cerrados: "+0+"  ");
-	}*/
-	}
-	/**
-	 * Metodo que devuelve el numero de habitacion actual si existe
-	 * @return un entero que es el numero de la habitacion
-	 */
-	private int numeroHabitacion()
-	{
-		return general;
-	}
-	/**
-	 * Metodo que devuelve el numero de nodos cerrados
-	 * @return un entero que es el numero de nodos cerrados
-	 */
-	private int numeroCerrados() {
-		return general;
 
-		
-	}
-	
-	/**
-	 * Metodo que devuelve el numero de nodos abiertos
-	 * @return un entero que es el numero de nodos abiertos
-	 */
-	private int numeroAbiertos() {
-		return general;
-
-	}
-	
 	/**
 	 * Metodo que construye la vista
 	 * @param i un booleano que indica la informacion que debe presentar
@@ -484,7 +361,6 @@ public class Ventana extends JFrame{
 						{
 						aprender();
 						limpia();
-						siguiente();
 						
 						}
 						else if (i==2)
@@ -503,10 +379,10 @@ public class Ventana extends JFrame{
 		if (boton!=null) sur.add(boton);
 		this._panelCentral.add(this.texto);
 		this._panelSur.add(boton);
-		//_panelESTE.removeAll();
-		System.out.println("SITUACION "+this.situacion);
 		if (this.situacion==2) this.texto.append(this.algoritmo.toString()+this.respuesta);
-		if (this.situacion==0) this.texto.append("INTRUCCIONES GENERALES \n 1.Elegir una estrategia general \n 2.Elegir el archivo de donde se lee las habitaciones \n 3.Antes de dar al boton seguir elegir la estrategia \n elegida para el problema de cada habitacion");
+		if (this.situacion==0) this.texto.append("INTRUCCIONES GENERALES \n 1.Cargar un archivo que tenga una serie de puntos" +
+				" \n 2.Pulsar sobre aprender para que aprendan los algoritmos \n " +
+				"3.Despues de que han aprendido los algoritmos se puede preguntar por puntos");
 		repaint();
 		setVisible(true);
 		
@@ -516,12 +392,6 @@ public class Ventana extends JFrame{
 	
 		this.respuesta= new String();
 		int clase =0;
-		System.out.println(this.situacion);
-		/*this.parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
-		//this.no_parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
-		this.lloyd.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
-		this.sof.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());*/
-		
 		if (estrategia.equalsIgnoreCase("Estimacion_no_parametrica"))
 		{
 			clase=this.no_parametrica.clase(this.preguntado);
@@ -530,7 +400,8 @@ public class Ventana extends JFrame{
 		else if (estrategia.equalsIgnoreCase("Estimacion Parametrica"))
 		{
 			clase=this.parametrica.clase(this.preguntado);
-			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
+			if (this.parametrica.error) respuesta="Se ha producido una matriz inversa que no tiene solucion \n no se puede calcular su clase"; 
+			else respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
 		}
 		else if (estrategia.equalsIgnoreCase("Algoritmo de Lloyd"))
 		{
@@ -540,6 +411,7 @@ public class Ventana extends JFrame{
 		else if (estrategia.equalsIgnoreCase("Self Organizing Map"))
 		{
 			clase=this.sof.clase(this.preguntado);
+			clase++;
 			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
 		}
 		System.out.println(this.respuesta);
@@ -550,78 +422,19 @@ public class Ventana extends JFrame{
 		JPanel panel = new JPanel (new GridLayout(4,1,10,1));
 		ButtonGroup tipoEstrategia = new ButtonGroup();
 	    JComboBox combo = new JComboBox();
-	    combo.addItem("Estimacion_no_parametrica");
 	    combo.addItem("Estimacion Parametrica");
+	    combo.addItem("Estimacion_no_parametrica");
 	    combo.addItem("Algoritmo de Lloyd");
 	    combo.addItem("Self Organizing Map");
-	    
-	    //for( int i=0; i < 100; i++ )
-	    //  combo.addItem( Integer.toString( i ) );
-	    
-		//JRadioButton tabRegular = new JRadioButton ("Tablero regular", true);
-		//JRadioButton tabIrregular = new JRadioButton ("Tablero irregular", false);
-		//JTextField campoFilas = new JTextField ("10",2);
 	    String puntotxt= this.clases.get(0).centro.stringVentana();
 		JTextField punto = new JTextField (puntotxt,1);
-		//final JTextField campoColumnas = new JTextField ("10",2);
-		//JLabel etiqFilas = new JLabel ("Número de filas:",SwingConstants.RIGHT);
 		JLabel etiqpunto = new JLabel (" Punto:",SwingConstants.CENTER);
 		JLabel estrateg = new JLabel (" Estrategia:",SwingConstants.CENTER);
-		//final JLabel etiqColumnas = new JLabel ("Número de columnas:",SwingConstants.RIGHT);
-		/*tabRegular.addActionListener(
-				new ActionListener() {
-					public void actionPerformed (ActionEvent evento) {
-						campoColumnas.setEnabled(true);
-						etiqColumnas.setEnabled(true);
-					}
-				}
-		);
-		tabIrregular.addActionListener(
-				new ActionListener() {
-					public void actionPerformed (ActionEvent evento) {
-						campoColumnas.setEnabled(false);
-						etiqColumnas.setEnabled(false);
-					}
-				}
-		);*/
-		//tipoTablero.add(tabRegular);
-		//tipoTablero.add(tabIrregular);
-		//panel.add(tabRegular);
-		//panel.add(etiqFilas);
-		//panel.add(campoFilas);
-		//panel.add(tabIrregular);
-		//panel.add(etiqColumnas);
-		//panel.add(campoColumnas);
 		panel.add(etiqpunto);
 		panel.add(punto);
 		panel.add(estrateg);
 		panel.add(combo);
 		validarPeticion (panel,punto,combo);
-		
-		/*// TODO Auto-generated method stub
-		JFrame ventana = new JFrame("INTRODUCE PUNTOS");
-		setLocation(100,100);
-		setSize(200,100);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		establecerCierre();*/
-		/*_panelCentral=new JPanel();
-		_panelNorte=new JPanel();
-		_panelEste=new JPanel();
-		_panelSur=new JPanel();
-		_panelOeste=new JPanel();
-		add(_panelCentral, BorderLayout.CENTER);
-		add(_panelNorte, BorderLayout.NORTH);
-		add(_panelSur, BorderLayout.SOUTH);
-		add(_panelEste, BorderLayout.EAST);
-		add(_panelOeste, BorderLayout.WEST);*/
-		//configurarPanelNorte();
-		//configurarPaneEste();
-		//setJMenuBar(barraMenu);
-		/*fin=false;
-		solucion=true;
-		//situacion=0;
-		//construirVista(0);
-		ventana.setVisible(true);*/
 		construirVista(this.situacion);
 	}
 	
@@ -636,7 +449,6 @@ public class Ventana extends JFrame{
 			try {
 				opcion=JOptionPane.showOptionDialog(this,panel,"Datos del Punto",JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,null,opciones,opciones[0]);
 				if (opcion==0) {
-					System.out.println("LLEGA");
 					String cadena=punto.getText();
 						if (valida(cadena)) valido=true;
 					if (!valido) JOptionPane.showMessageDialog(this,"El punto introduce no tiene suficientes o demasiado componentes","Error en los datos",JOptionPane.ERROR_MESSAGE,null);
@@ -648,15 +460,11 @@ public class Ventana extends JFrame{
 			} 
 		}
 		String estrategia=(String)combo.getSelectedItem();
-		
-		System.out.println("ESTRATEGIA"+estrategia);
 		if (opcion==0) nuevo_texto(estrategia);
 	}
 	
 	public boolean valida(String cadena)
 	{
-		System.out.println("LLEGA2");
-		System.out.println(cadena);
 		boolean valido=false;
 		boolean error= false;
 		int caso=0;
@@ -725,11 +533,15 @@ public class Ventana extends JFrame{
 					this.preguntado.getNumeros()[indice]=numero;
 					indice++;
 				}
+				else if (aux[i]==')')
+				{
+					this.preguntado.getNumeros()[indice]=numero;
+					indice++;
+				}
 				else error=true;
 			}break;
 			}
 		}
-		System.out.println(this.preguntado.toString());
 		if (indice==this.preguntado.getCoordenadas()) return(true);
 		else return(false);
 	}
@@ -758,7 +570,6 @@ public class Ventana extends JFrame{
 		this.texto = new JTextArea("CLASES CALCULADASSSSSSSS \n \n");
 		if (this.situacion==2) this.texto.append(this.algoritmo.toString());
 		this._panelCentral.add(this.texto);
-		System.out.println("SE Aprendessssssssssssssss");
 		construirVista(this.situacion);
 		
 	}
@@ -766,100 +577,18 @@ public class Ventana extends JFrame{
 	private void aprender() {
 		
 		this.situacion=2;
-		System.out.println(this.situacion);
 		this.parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
 		//this.no_parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
 		this.lloyd.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
 		this.sof.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
-		System.out.println("SE Aprende");
 	}
 	
-	private String estragias() {
-		String aux= new String();
-		switch(general)
-		{
-			case 1:aux+="Estrategia general AEstrella \n";break;
-			case 2:aux+="Estrategia general BusquedaVoraz \n";break;
-			case 3:aux+="Estrategia general CosteUniforme \n";break;
-			case 4:aux+="Estrategia general EscaladaMaxima \n";break;
-			case 5:aux+="Estrategia general EscaladaSimple \n";break;
-			case 6:aux+="Estrategia general PrimeroAnchura\n";break;
-			case 7:aux+="Estrategia general PrimeroPronfundidad \n";break;
-		}
-		switch(nogeneral)
-		{
-		case 1:aux+="Estrategia hanitacion AEstrella \n";break;
-		case 2:aux+="Estrategia hanitacion BusquedaVoraz \n";break;
-		case 3:aux+="Estrategia hanitacion CosteUniforme \n";break;
-		case 4:aux+="Estrategia hanitacion EscaladaMaxima \n";break;
-		case 5:aux+="Estrategia hanitacion EscaladaSimple \n";break;
-		case 6:aux+="Estrategia hanitacion PrimeroAnchura\n";break;
-		case 7:aux+="Estrategia hanitacion PrimeroPronfundidad \n";break;
-		}
-		return(aux);
-	}
-	/**
-	 * metodo que resuelve el problema de la habitacion
-	 * @param p de la clase problema que es el problema a resolver
-	 * @param e de la clase estado
-	 */
-	private void problema_habitacion()
-	{
-		
-		
-		
-	}
-	
-	/**
-	 * Metodo para indicar que problema se debe resolver y despues resolverlo
-	 */
-	private void problema() {
-		
-		
-		}
-	
-	
-	/**
-	 * Metodo que hace que avanzemos a la siguiente habitacion del problema general
-	 */
-	public void siguiente()
-	{
-		
-		//if (this.fin==false)
-		
-	}
-	
-
 	 /**
 	  * Getter de serialVersionUID
 	  * @return serialVersionUID
 	  */
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
-	}
-	
-	/**
-	 * Getter de la etiqueta habitacion
-	 * @return una etiueta
-	 */
-	public JLabel get_habitacion() {
-		return _habitacion;
-	}
-
-	/**
-	 * Getter de numero de abiertos
-	 * @return el numero de abiertos
-	 */
-	public JLabel get_numabiertos() {
-		return _numabiertos;
-	}
-
-	/**
-	 * Getter de numero de cerrados
-	 * @return el numero de cerrados
-	 */
-	public JLabel get_numcerrados() {
-		return _numcerrados;
 	}
 	
 	/**

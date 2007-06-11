@@ -9,12 +9,15 @@ public class Matriz {
 	private  double matriz [][];
 	
 	private int iDF = 0;
+	
+	public boolean error;
 
 	public Matriz(int filas, int columnas,double [] punto,boolean tipo)
 	{
 		this.filas=filas;
 		this.columnas=columnas;
 		this. matriz = new double[filas] [columnas];
+		this.error=false;
 		if (tipo)
 		{
 		for (int i=0;i<filas;i++)
@@ -171,9 +174,11 @@ public class Matriz {
 		double dd = 0;
 
 		if (det == 0) {
+			m.error=true;
 				System.out.println("Determinant Equals 0, Not Invertible.");
 
 		} else {
+			m.error=false;
 			dd = 1 / det;
 		}
 
@@ -297,6 +302,16 @@ public Matriz UpperTriangle() {
 	return m;
 }
 
+
+	public void imprimir() {
+	 Matriz nueva = new Matriz(this.filas,this.columnas); 
+			for (int i=0;i<filas;i++)
+			{
+				System.out.println();
+				for (int j=0;j<columnas;j++)
+					System.out.print(" "+this.matriz[i][j]);
+			}
+	}
 	
 	
 	 private Matriz copia() {
