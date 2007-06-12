@@ -92,6 +92,8 @@ public class Ventana extends JFrame{
 	
 	private String respuesta;
 	
+	private int T;
+	
 	/**
 	 * Construvtor de la clase Ventana,
 	 * Aqui se crea la ventana de la aplicacion y se arranca desde aqui
@@ -121,12 +123,12 @@ public class Ventana extends JFrame{
 		add(_panelEste, BorderLayout.EAST);
 		add(_panelOeste, BorderLayout.WEST);
 		configurarPanelNorte();
-		configurarPaneEste();
 		setJMenuBar(barraMenu);
 		situacion=0;
 		this.respuesta= new String();
 		preguntado=null;
 		construirVista(0);
+		T=20;
 		this.setVisible(true);
 	}
 	/**
@@ -166,14 +168,56 @@ public class Ventana extends JFrame{
 	 * @param menuArchivo elemento de la clase JMenu que se va a modificar
 	 */
 	public void configurarMenuArchivo(JMenu menuArchivo) {
-		menuArchivo.setToolTipText("Menú Archivo: Cargar ");
+		menuArchivo.setToolTipText("Menú Archivo: Cargar,Configurar T ");
 		menuArchivo.setMnemonic('A');
-		JMenuItem opcionCargar = new JMenuItem ("Cargar Juego", 'C'); 
-		opcionCargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,InputEvent.CTRL_MASK));
+		JMenuItem opcionCargar = new JMenuItem ("Cargar Puntos", 'C'); 
 		menuArchivo.add(opcionCargar);
-		establecerOyenteCargar(opcionCargar);
+		JMenuItem opcionT = new JMenuItem ("Configurar T", 'C'); 
+		menuArchivo.add(opcionT);
+		establecerOyenteOpcionT(opcionT);
 	}
 
+	private void establecerOyenteOpcionT(JMenuItem opcionT) {
+		opcionT.setToolTipText("Modificar el valor de T");
+		opcionT.addActionListener(
+				new ActionListener () {
+					public void actionPerformed (ActionEvent evento) {
+						ventanaT();	
+					}
+				}
+		);
+	}
+	private void ventanaT() {
+			JPanel panel = new JPanel (new GridLayout(1,1,10,1));
+			JTextField punto = new JTextField (this.T);
+			JLabel etiqpunto = new JLabel (" Punto:",SwingConstants.CENTER);
+			panel.add(etiqpunto);
+			panel.add(punto);
+			validarPeticion (panel,punto);
+			construirVista(this.situacion);
+		}
+		
+		//private void validarPeticion (JPanel panel, JRadioButton tabRegular, JRadioButton tabIrregular, JTextField campoFilas, JTextField campoColumnas) {
+		private void validarPeticion (JPanel panel,JTextField punto) {
+			boolean valido=false;
+			Object[] opciones = {"Aceptar", "Cancelar"};
+			int opcion=0;
+			while (!valido) {
+				try {
+					opcion=JOptionPane.showOptionDialog(this,panel,"Datos del valor de T (un entero)",JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,null,opciones,opciones[0]);
+					if (opcion==0) {
+						this.T=Integer.parseInt(punto.getText());
+							valido=this.T>0;
+						if (!valido) JOptionPane.showMessageDialog(this,"El valor de T no puede ser negativo ni igual a cero","Error en los datos",JOptionPane.ERROR_MESSAGE,null);
+					}
+					else valido=true;
+				}
+				catch (Exception e) {
+					JOptionPane.showMessageDialog(this,"El valor de T no puede ser negativo ni igual a cero","Error en los datos",JOptionPane.ERROR_MESSAGE,null);
+				} 
+			}
+		}
+		
 	/**
 	 * Metodo que establece la estrategia
 	 * @param numero un entero que indica la estrategia
@@ -278,7 +322,7 @@ public class Ventana extends JFrame{
 		 aux.add(seis);
 		 aux.add(siete);
 		 aux.add(ocho);
-		 this.algoritmo= new Cuantizacion_vectorial(1.25);
+		 this.algoritmo= new Cuantizacion_vectorial(this.T);
 		 algoritmo.calcula(aux);
 		 clases=algoritmo.getCentros();
 		 this.situacion=1;
@@ -319,26 +363,6 @@ public class Ventana extends JFrame{
 	    if(opcion == JFileChooser.APPROVE_OPTION) return selector.getSelectedFile();
 	    return null;
 	}
-	/**
-	 * Metodo para configurar el panel Este
-	 *
-	 */
-	public void configurarPaneEste() {
-		//_panelEste.removeAll();
-		/*_panelEste.setLayout(new GridLayout(4,1));
-		_panelEste.setBorder(new BevelBorder(BevelBorder.RAISED));
-		_panelEste.add(new Label("INFORMACIÓN SOBRE EL JUEGO"));
-		this._habitacion=new JLabel ("  Habitacion: "+numeroHabitacion()+"  ",JLabel.CENTER);
-		this._numabiertos=new JLabel ("  Abiertos: "+numeroAbiertos()+"  ",JLabel.CENTER);
-		this._numcerrados=new JLabel ("  Cerrados: "+numeroCerrados()+"  ",JLabel.CENTER);
-		_panelEste .add(_habitacion);
-		_panelEste.add(_numabiertos);
-		_panelEste.add(_numcerrados);*/
-	}
-	/**
-	 * Metodo que actualiza los valores del Panel Este
-	 * @param opcion un booleano que indica el tipo de acrualizacion
-	 */
 
 	/**
 	 * Metodo que construye la vista
@@ -400,7 +424,7 @@ public class Ventana extends JFrame{
 		else if (estrategia.equalsIgnoreCase("Estimacion Parametrica"))
 		{
 			clase=this.parametrica.clase(this.preguntado);
-			if (this.parametrica.error) respuesta="Se ha producido una matriz inversa que no tiene solucion \n no se puede calcular su clase"; 
+			if (this.parametrica.error) respuesta="\n Se ha producido una matriz inversa que no tiene solucion \n no se puede calcular su clase"; 
 			else respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
 		}
 		else if (estrategia.equalsIgnoreCase("Algoritmo de Lloyd"))
@@ -472,6 +496,7 @@ public class Ventana extends JFrame{
 		double potencia=0;
 		int indice=0;
 		char letra;
+		boolean negativo = false;
 		this.preguntado= new Punto(this.clases.get(0).getCentro().getCoordenadas());
 		char aux []= cadena.toCharArray();
 		for (int i=0;((i<cadena.length() )&&(!error));i++)
@@ -493,6 +518,11 @@ public class Ventana extends JFrame{
 					numero+=pasaentero(aux[i]);
 					caso=2;
 				}
+				else if (aux[i]=='-') 
+				{
+					negativo=true;
+					caso=1;
+				}
 				else error=true;
 			}break;
 			case 2:
@@ -506,7 +536,9 @@ public class Ventana extends JFrame{
 				else if (aux[i]==',') 
 				{
 					caso=1;
-					this.preguntado.getNumeros()[indice]=numero;
+					if (negativo) this.preguntado.getNumeros()[indice]=numero*-1;
+					else this.preguntado.getNumeros()[indice]=numero;
+					negativo=false;
 					indice++;
 				}
 				else if (aux[i]=='.') 
@@ -515,7 +547,9 @@ public class Ventana extends JFrame{
 				}
 				else if (aux[i]==')')
 				{
-					this.preguntado.getNumeros()[indice]=numero;
+					if (negativo) this.preguntado.getNumeros()[indice]=numero*-1;
+					else this.preguntado.getNumeros()[indice]=numero;
+					negativo=false;
 					indice++;
 				}
 				else error=true;
@@ -530,18 +564,23 @@ public class Ventana extends JFrame{
 				else if (aux[i]==',') 
 				{
 					caso=1;
-					this.preguntado.getNumeros()[indice]=numero;
+					if (negativo) this.preguntado.getNumeros()[indice]=numero*-1;
+					else this.preguntado.getNumeros()[indice]=numero;
+					negativo=false;
 					indice++;
 				}
 				else if (aux[i]==')')
 				{
-					this.preguntado.getNumeros()[indice]=numero;
+					if (negativo) this.preguntado.getNumeros()[indice]=numero*-1;
+					else this.preguntado.getNumeros()[indice]=numero;
+					negativo=false;
 					indice++;
 				}
 				else error=true;
 			}break;
 			}
 		}
+		System.out.println(this.preguntado.toString());
 		if (indice==this.preguntado.getCoordenadas()) return(true);
 		else return(false);
 	}

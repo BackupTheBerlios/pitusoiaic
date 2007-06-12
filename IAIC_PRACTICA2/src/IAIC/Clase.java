@@ -36,8 +36,6 @@ public class Clase {
 		{
 			sumas[j]=0.0;
 		}
-		
-		System.out.println(muestras.size());
 		for (int i=0;i<muestras.size();i++)
 		{
 			for (int j=0;j<centro.coordenadas;j++)

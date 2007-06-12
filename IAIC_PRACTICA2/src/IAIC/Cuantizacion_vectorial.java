@@ -93,8 +93,6 @@ public class Cuantizacion_vectorial {
 		 Cuantizacion_vectorial algoritmo= new Cuantizacion_vectorial(20);
 		 algoritmo.calcula(aux);
 		 System.out.println(algoritmo.toString());
-		 
-
 	 }
 
 	public String toString()

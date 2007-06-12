@@ -80,19 +80,16 @@ public class Estimacion_parametrica implements Algoritmos{
 		int clase=0;
 		double aux=0;
 		double valor_maximo=0;
-		System.out.println("MAXIMA VERSOSIMILITUD");
 		for(int i=0;i<this.vector_aprendido.size();i++)
 		{
 			if (i==0)
 			{
 				
 				valor_maximo=funcion_verosimilitud(i,punto);
-				System.out.println(valor_maximo);
 			}
 			else
 			{
 				aux=funcion_verosimilitud(i,punto);
-				System.out.println(aux);
 				if (aux>valor_maximo)
 				{
 					valor_maximo=aux;
@@ -100,8 +97,6 @@ public class Estimacion_parametrica implements Algoritmos{
 				}
 			}
 		}
-		
-		System.out.println("CLASE "+clase);
 		return(clase);
 		
 	}
@@ -119,7 +114,6 @@ public class Estimacion_parametrica implements Algoritmos{
 		Matriz aux =new Matriz(punto.coordenadas,1,punto.numeros,true);
 		Matriz resta=aux.resta(this.vector_aprendido.get(i).m);
 		aux=resta.traspuesta();
-		this.vector_aprendido.get(i).c.imprimir();
 		Matriz inversa =this.vector_aprendido.get(i).c.Inverse();
 		if (inversa.error) error= true;
 		aux=aux.multiplica(inversa);
@@ -129,39 +123,7 @@ public class Estimacion_parametrica implements Algoritmos{
 
 	public static void main(String[] arg)
 	 {
-	 
-		 /*double entrada1 []={200,160,120};
-		 double entrada2 []={90,130,60};
-		 double entrada3 []={210,170,130};
-		 double entrada4 []={35,25,46};
-		 double entrada5 []={215,172,133};
-		 double entrada6 []={92,138,54};
-		 double entrada7 []={87,128,66};
-		 double entrada8 []={41,22,37};
-		 Punto uno = new Punto(3,entrada1);
-		 Punto dos = new Punto(3,entrada2);
-		 Punto tres = new Punto(3,entrada3);
-		 Punto cuatro = new Punto(3,entrada4);
-		 Punto cinco = new Punto(3,entrada5);
-		 Punto seis = new Punto(3,entrada6);
-		 Punto siete = new Punto(3,entrada7);
-		 Punto ocho = new Punto(3,entrada8);
-		 Vector<Punto> aux= new Vector<Punto> ();
-		 aux.add(uno);
-		 aux.add(dos);
-		 aux.add(tres);
-		 aux.add(cuatro);
-		 aux.add(cinco);
-		 aux.add(seis);
-		 aux.add(siete);
-		 aux.add(ocho);
-		 Cuantizacion_vectorial algoritmo= new Cuantizacion_vectorial(20);
-		 algoritmo.calcula(aux);
-		 Estimacion_parametrica prueba = new Estimacion_parametrica();
-		 prueba.Aprendizaje(algoritmo.clases,algoritmo.centros);
-		 System.out.println(uno.distancia(dos));
-		 System.out.println("RESULTADO "+prueba.maxima_verosimilitud(uno));*/
-		double entrada2 []={1,0,0};
+		 double entrada2 []={1,0,0};
 		 double entrada3 []={0,0,0};
 		 double entrada4 []={1,1,0};
 		 double entrada5 []={1,0,1};
@@ -177,37 +139,31 @@ public class Estimacion_parametrica implements Algoritmos{
 		 Punto seis = new Punto(3,entrada6);
 		 Punto siete = new Punto(3,entrada7);
 		 Punto ocho = new Punto(3,entrada8);
-		 Vector<Punto> aux= new Vector<Punto> ();
-		Vector<Clase> centros = new Vector<Clase>();
-		Clase c1 = new Clase();
-		c1.centro=dos;
-		c1.muestras.add(dos);
-		c1.muestras.add(tres);
-		c1.muestras.add(cuatro);
-		c1.muestras.add(cinco);
-		Clase c2 = new Clase();
-		c2.centro=seis;
-		c2.muestras.add(seis);
-		c2.muestras.add(siete);
-		c2.muestras.add(ocho);
-		c2.muestras.add(uno);
-		centros.add(c1);
-		centros.add(c2);
-		 aux.add(uno);
-		 aux.add(dos);
-		 aux.add(tres);
-		 aux.add(cuatro);
-		 aux.add(cinco);
-		 aux.add(seis);
-		 aux.add(siete);
-		 aux.add(ocho);
-		 Cuantizacion_vectorial algoritmo= new Cuantizacion_vectorial(1.25);
-		 algoritmo.calcula(aux);
-		Estimacion_parametrica prueba = new Estimacion_parametrica();
-		prueba.Aprendizaje(algoritmo.getClases(),algoritmo.getCentros());
-		System.out.println(uno.distancia(dos));
-		System.out.println("RESULTADO "+prueba.clase(ocho));
-		 
+		 Vector<Clase> centros = new Vector<Clase>();
+		 Clase c1 = new Clase();
+		 c1.centro=dos;
+		 c1.muestras.add(dos);
+		 c1.muestras.add(tres);
+		 c1.muestras.add(cuatro);
+		 c1.muestras.add(cinco);
+		 Clase c2 = new Clase();
+		 c2.centro=seis;
+		 c2.muestras.add(seis);
+		 c2.muestras.add(siete);
+		 c2.muestras.add(ocho);
+		 c2.muestras.add(uno);
+		 centros.add(c1);
+		 centros.add(c2);
+		 Estimacion_parametrica prueba = new Estimacion_parametrica();
+		 prueba.Aprendizaje(2,centros);
+		 System.out.println("Clase de  "+dos.toString()+" "+prueba.clase(dos));
+		 System.out.println("Clase de  "+tres.toString()+" "+prueba.clase(tres));
+		 System.out.println("Clase de  "+cuatro.toString()+" "+prueba.clase(cuatro));
+		 System.out.println("Clase de  "+cinco.toString()+" "+prueba.clase(cinco));
+		 System.out.println("Clase de  "+seis.toString()+" "+prueba.clase(seis));
+		 System.out.println("Clase de  "+siete.toString()+" "+prueba.clase(siete));
+		 System.out.println("Clase de  "+ocho.toString()+" "+prueba.clase(ocho));
+		 System.out.println("Clase de  "+uno.toString()+" "+prueba.clase(uno));
 
 	 }
 

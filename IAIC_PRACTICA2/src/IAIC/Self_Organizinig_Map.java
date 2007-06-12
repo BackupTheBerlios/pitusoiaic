@@ -133,22 +133,22 @@ public class Self_Organizinig_Map implements Algoritmos {
 		 Punto siete = new Punto(2,entrada7);
 		 double nuevo  []={6,2};
 		 Punto nuevo1 = new Punto(2,nuevo);
-		Vector<Clase> centros = new Vector<Clase>();
-		Clase c1 = new Clase();
-		c1.centro=centro11;
-		c1.muestras.add(dos);
-		c1.muestras.add(tres);
-		c1.muestras.add(cuatro);
-		c1.muestras.add(cinco);
-		Clase c2 = new Clase();
-		c2.centro=centro12;
-		c2.muestras.add(seis);
-		c2.muestras.add(siete);
-		centros.add(c1);
-		centros.add(c2);
-		Self_Organizinig_Map prueba = new Self_Organizinig_Map(1.0, 0.8, 5, 0.001);
-		prueba.Aprendizaje(2, centros);
-		System.out.println(prueba.clase(nuevo1));
+		 Vector<Clase> centros = new Vector<Clase>();
+		 Clase c1 = new Clase();
+		 c1.centro=centro11;
+		 c1.muestras.add(dos);
+		 c1.muestras.add(tres);
+		 c1.muestras.add(cuatro);
+		 c1.muestras.add(cinco);
+		 Clase c2 = new Clase();
+		 c2.centro=centro12;
+		 c2.muestras.add(seis);
+		 c2.muestras.add(siete);
+		 centros.add(c1);
+		 centros.add(c2);
+		 Self_Organizinig_Map prueba = new Self_Organizinig_Map(1.0, 0.8, 5, 0.001);
+		 prueba.Aprendizaje(2, centros);
+		 System.out.println(prueba.clase(nuevo1));
 	 }
 
 }
