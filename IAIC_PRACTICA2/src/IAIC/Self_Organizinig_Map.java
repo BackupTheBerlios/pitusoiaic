@@ -148,7 +148,14 @@ public class Self_Organizinig_Map implements Algoritmos {
 		 centros.add(c2);
 		 Self_Organizinig_Map prueba = new Self_Organizinig_Map(1.0, 0.8, 5, 0.001);
 		 prueba.Aprendizaje(2, centros);
-		 System.out.println(prueba.clase(nuevo1));
+		 System.out.println("Centros : c1 "+prueba.centros.get(0).toString()+" c2"+prueba.centros.get(1).toString());
+		 System.out.println("Clase de  "+nuevo1.toString()+" "+prueba.clase(nuevo1));
+		 System.out.println("Clase de  "+dos.toString()+" "+prueba.clase(dos));
+		 System.out.println("Clase de  "+tres.toString()+" "+prueba.clase(tres));
+		 System.out.println("Clase de  "+cuatro.toString()+" "+prueba.clase(cuatro));
+		 System.out.println("Clase de  "+cinco.toString()+" "+prueba.clase(cinco));
+		 System.out.println("Clase de  "+seis.toString()+" "+prueba.clase(seis));
+		 System.out.println("Clase de  "+siete.toString()+" "+prueba.clase(siete));
 	 }
 
 }
