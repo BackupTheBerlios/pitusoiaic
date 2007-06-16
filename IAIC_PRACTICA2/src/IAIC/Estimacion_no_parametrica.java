@@ -9,6 +9,8 @@ public class Estimacion_no_parametrica implements Algoritmos{
 	private LinkedList <ConjuntoM_C> vector_aprendido;
 	private Vector<Clase> centros;
 	
+	private double lado_hiper;
+	
 	private boolean error;
 	
 	
@@ -16,6 +18,13 @@ public class Estimacion_no_parametrica implements Algoritmos{
 	{
 		error=false;
 		this.vector_aprendido= new LinkedList <ConjuntoM_C> () ;
+		lado_hiper = 0.5;
+	}
+	
+	public Estimacion_no_parametrica(double lado_hip){
+		error=false;
+		this.vector_aprendido= new LinkedList <ConjuntoM_C> () ;
+		lado_hiper = lado_hip;
 	}
 	
 	public void Aprendizaje(int clases,Vector<Clase> centros)
@@ -70,12 +79,25 @@ public class Estimacion_no_parametrica implements Algoritmos{
 		return(media);
 	}
 	
-	public int clase (Punto punto) throws Exception{
-		throw new Exception("Estimación no paramétrica ->Método no valido.");
+	public int clase (Punto punto) {
+		int clase = 0;
+		double maxprob;
+		if (vector_aprendido.size() == 0) return clase;
+		maxprob = funcionVerosimilitud(punto,lado_hiper,0);
+		for ( int i=1;i<vector_aprendido.size();i++){
+			double prob = funcionVerosimilitud(punto,lado_hiper,i);
+			if (prob > maxprob) {
+				maxprob = prob;
+				clase = i;
+			}
+		}
+		return clase;
 	}
 	
-	public double funcion_verosimilitud (Punto punto, double lado_hiper,
-			int dimension_hiper, int numero_clase){
+	private double funcionVerosimilitud (Punto punto, double lado_hiper,
+			 int numero_clase){
+
+		int dimension_hiper = punto.getCoordenadas();
 		double prob = 0;
 		double factor = calculaFactor(lado_hiper,dimension_hiper,numero_clase);
 		double acumulado = 0; 
@@ -152,21 +174,21 @@ public class Estimacion_no_parametrica implements Algoritmos{
 		Clase c2 = new Clase();
 		c2.setCentro(cuatro);
 		c2.getMuestras().add(seis);
-		c2.getMuestras().add(siete);
+		c2.getMuestras().add(cuatro);
 		c2.getMuestras().add(ocho);
 		c2.getMuestras().add(uno);
 		centros.add(c1);
 		centros.add(c2);
 		Estimacion_no_parametrica prueba = new Estimacion_no_parametrica();
 		prueba.Aprendizaje(2,centros);
-		System.out.println("Probabilidad de  "+dos.toString()+" en la clase 0: "+ prueba.funcion_verosimilitud(dos,0.5,3,0));
-		System.out.println("Probabilidad de  "+dos.toString()+" en la clase 1: "+ prueba.funcion_verosimilitud(dos,0.5,3,1));
-		System.out.println("Probabilidad de  "+tres.toString()+" en la clase 0: "+ prueba.funcion_verosimilitud(tres,0.5,3,0));
-		System.out.println("Probabilidad de  "+tres.toString()+" en la clase 1: "+ prueba.funcion_verosimilitud(tres,0.5,3,1));
-		System.out.println("Probabilidad de  "+cuatro.toString()+" en la clase 0: "+ prueba.funcion_verosimilitud(cuatro,0.5,3,0));
-		System.out.println("Probabilidad de  "+cuatro.toString()+" en la clase 1: "+ prueba.funcion_verosimilitud(cuatro,0.5,3,1));
-		System.out.println("Probabilidad de  "+seis.toString()+" en la clase 0: "+ prueba.funcion_verosimilitud(seis,0.5,3,0));
-		System.out.println("Probabilidad de  "+seis.toString()+" en la clase 1: "+ prueba.funcion_verosimilitud(seis,0.5,3,1));
+		System.out.println("Clase de  "+dos.toString()+" "+prueba.clase(dos));
+		System.out.println("Clase de  "+tres.toString()+" "+prueba.clase(tres));
+		System.out.println("Clase de  "+cuatro.toString()+" "+prueba.clase(cuatro));
+		System.out.println("Clase de  "+cinco.toString()+" "+prueba.clase(cinco));
+		System.out.println("Clase de  "+seis.toString()+" "+prueba.clase(seis));
+		System.out.println("Clase de  "+siete.toString()+" "+prueba.clase(siete));
+		System.out.println("Clase de  "+ocho.toString()+" "+prueba.clase(ocho));
+		System.out.println("Clase de  "+uno.toString()+" "+prueba.clase(uno));
 	}
 	
 	public LinkedList<ConjuntoM_C> getVector_aprendido() {
