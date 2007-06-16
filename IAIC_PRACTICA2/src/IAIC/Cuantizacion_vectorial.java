@@ -100,7 +100,7 @@ public class Cuantizacion_vectorial {
 		String nueva= new String("\n");
 		for (int i=0;i<this.clases;i++)
 		{
-			nueva+=" CLASE "+(i+1)+" : REPRENSENTANTE "+this.centros.get(i).getCentro().toString()+"\n "+"MUESTRAS DE LA CLASE : ";
+			nueva+=" CLASE "+(i)+" : REPRENSENTANTE "+this.centros.get(i).getCentro().toString()+"\n "+"MUESTRAS DE LA CLASE : ";
 			for (int j=0;j<this.centros.get(i).getMuestras().size();j++)
 			{
 				nueva+=this.centros.get(i).getMuestras().get(j).toString()+"  ";
