@@ -192,7 +192,7 @@ public class Ventana extends JFrame{
 	}
 	private void ventanaT() {
 			JPanel panel = new JPanel (new GridLayout(1,1,10,1));
-			JTextField punto = new JTextField (this.T);
+			JTextField punto = new JTextField ("20");
 			JLabel etiqpunto = new JLabel (" Punto:",SwingConstants.CENTER);
 			panel.add(etiqpunto);
 			panel.add(punto);
