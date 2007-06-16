@@ -156,6 +156,7 @@ public class Self_Organizinig_Map implements Algoritmos {
 		 System.out.println("Clase de  "+cinco.toString()+" "+prueba.clase(cinco));
 		 System.out.println("Clase de  "+seis.toString()+" "+prueba.clase(seis));
 		 System.out.println("Clase de  "+siete.toString()+" "+prueba.clase(siete));
+	 
 	 }
 
 }
