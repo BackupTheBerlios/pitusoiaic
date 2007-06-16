@@ -349,8 +349,8 @@ public class Ventana extends JFrame{
 		int clase =0;
 		if (estrategia.equalsIgnoreCase("Estimacion_no_parametrica"))
 		{
-			//clase=this.no_parametrica.clase(this.preguntado);
-			//respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
+			clase=this.no_parametrica.clase(this.preguntado);
+			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
 		}
 		else if (estrategia.equalsIgnoreCase("Estimacion Parametrica"))
 		{
@@ -360,13 +360,12 @@ public class Ventana extends JFrame{
 		}
 		else if (estrategia.equalsIgnoreCase("Algoritmo de Lloyd"))
 		{
-			//clase=this.lloyd.clase(this.preguntado);
-			//respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
+			clase=this.lloyd.clase(this.preguntado);
+			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
 		}
 		else if (estrategia.equalsIgnoreCase("Self Organizing Map"))
 		{
 			clase=this.sof.clase(this.preguntado);
-			clase++;
 			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
 		}
 		System.out.println(this.respuesta);
@@ -548,7 +547,7 @@ public class Ventana extends JFrame{
 		
 		this.situacion=2;
 		this.parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
-		//this.no_parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
+		this.no_parametrica.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
 		this.lloyd.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
 		this.sof.Aprendizaje(this.algoritmo.getClases(), this.algoritmo.getCentros());
 	}
