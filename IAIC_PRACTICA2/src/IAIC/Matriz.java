@@ -10,7 +10,7 @@ public class Matriz {
 	
 	private int iDF = 0;
 	
-	public boolean error;
+	private boolean error;
 
 	public Matriz(int filas, int columnas,double [] punto,boolean tipo)
 	{
@@ -166,7 +166,7 @@ public class Matriz {
 	
 	public Matriz Inverse() {
 
-		int tms = this.filas;
+	//	int tms = this.filas;
 		Matriz m = new Matriz (this.filas,this.columnas);
 		Matriz mm = this.Adjoint();
 
@@ -304,7 +304,7 @@ public Matriz UpperTriangle() {
 
 
 	public void imprimir() {
-	 Matriz nueva = new Matriz(this.filas,this.columnas); 
+	// Matriz nueva = new Matriz(this.filas,this.columnas); 
 			for (int i=0;i<filas;i++)
 			{
 				System.out.println();
@@ -321,6 +321,10 @@ public Matriz UpperTriangle() {
 					nueva.matriz[i][j]=this.matriz[i][j];
 	return(nueva);
 }
+	 
+	 public boolean getError(){
+		 return error;
+	 }
 
 
 	public static void main(String[] arg)
@@ -347,6 +351,8 @@ public Matriz UpperTriangle() {
 		//inversa.multiplicanum(6);
 		inversa=inversa.traspuesta();
 		Matriz mult=uno.multiplica(inversa);
-		 Matriz dos = uno.traspuesta();
+		Matriz dos = uno.traspuesta();
+		mult.imprimir();
+		dos.imprimir();
 	 }
 }

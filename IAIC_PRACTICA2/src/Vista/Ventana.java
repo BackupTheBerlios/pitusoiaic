@@ -301,17 +301,17 @@ public class Ventana extends JFrame{
 		 Vector<Punto> aux= new Vector<Punto> ();
 		Vector<Clase> centros = new Vector<Clase>();
 		Clase c1 = new Clase();
-		c1.centro=dos;
-		c1.muestras.add(dos);
-		c1.muestras.add(tres);
-		c1.muestras.add(cuatro);
-		c1.muestras.add(cinco);
+		c1.setCentro(dos);
+		c1.getMuestras().add(dos);
+		c1.getMuestras().add(tres);
+		c1.getMuestras().add(cuatro);
+		c1.getMuestras().add(cinco);
 		Clase c2 = new Clase();
-		c2.centro=seis;
-		c2.muestras.add(seis);
-		c2.muestras.add(siete);
-		c2.muestras.add(ocho);
-		c2.muestras.add(uno);
+		c2.setCentro(seis);
+		c2.getMuestras().add(seis);
+		c2.getMuestras().add(siete);
+		c2.getMuestras().add(ocho);
+		c2.getMuestras().add(uno);
 		centros.add(c1);
 		centros.add(c2);
 		 aux.add(uno);
@@ -418,13 +418,13 @@ public class Ventana extends JFrame{
 		int clase =0;
 		if (estrategia.equalsIgnoreCase("Estimacion_no_parametrica"))
 		{
-			clase=this.no_parametrica.clase(this.preguntado);
+			clase=(int) this.no_parametrica.funcion_verosimilitud(this.preguntado,0.5,this.preguntado.getCoordenadas(),0);
 			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
 		}
 		else if (estrategia.equalsIgnoreCase("Estimacion Parametrica"))
 		{
 			clase=this.parametrica.clase(this.preguntado);
-			if (this.parametrica.error) respuesta="\n Se ha producido una matriz inversa que no tiene solucion \n no se puede calcular su clase"; 
+			if (this.parametrica.getError()) respuesta="\n Se ha producido una matriz inversa que no tiene solucion \n no se puede calcular su clase"; 
 			else respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
 		}
 		else if (estrategia.equalsIgnoreCase("Algoritmo de Lloyd"))
@@ -450,7 +450,7 @@ public class Ventana extends JFrame{
 	    combo.addItem("Estimacion_no_parametrica");
 	    combo.addItem("Algoritmo de Lloyd");
 	    combo.addItem("Self Organizing Map");
-	    String puntotxt= this.clases.get(0).centro.stringVentana();
+	    String puntotxt= this.clases.get(0).getCentro().stringVentana();
 		JTextField punto = new JTextField (puntotxt,1);
 		JLabel etiqpunto = new JLabel (" Punto:",SwingConstants.CENTER);
 		JLabel estrateg = new JLabel (" Estrategia:",SwingConstants.CENTER);

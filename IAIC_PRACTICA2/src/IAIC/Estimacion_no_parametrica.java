@@ -6,10 +6,10 @@ import java.util.Vector;
 public class Estimacion_no_parametrica implements Algoritmos{
 	
 	
-	LinkedList <ConjuntoM_C> vector_aprendido;
-	Vector<Clase> centros;
+	private LinkedList <ConjuntoM_C> vector_aprendido;
+	private Vector<Clase> centros;
 	
-	public boolean error;
+	private boolean error;
 	
 	
 	public Estimacion_no_parametrica()
@@ -32,41 +32,41 @@ public class Estimacion_no_parametrica implements Algoritmos{
 	
 	private Matriz calcular_covarianza(int i, Vector<Clase> centros) {
 		
-		int tamaño=centros.get(i).centro.coordenadas;
+		int tamaño=centros.get(i).getCentro().getCoordenadas();
 		Matriz suma= new Matriz(tamaño,tamaño);
 		Matriz resta1= new Matriz(tamaño,tamaño);
 		Matriz resta2= new Matriz(tamaño,tamaño);
 		Punto aux;
 		Matriz nueva;
-		for (int j=0;j<centros.get(i).muestras.size();j++)
+		for (int j=0;j<centros.get(i).getMuestras().size();j++)
 		{			
 			/* Obtengo la matriz de restarle a cada coordenada de los puntos
 			 * contenidos en cada una de las restas la media previamente calculada.
 			 * Esa matriz la traspongo y la multiplico por ella misma.
 			 * Calculo la media de hacerlo con todos los puntos.
 			 */ 
-			aux=centros.get(i).muestras.get(j);
-			nueva=new Matriz(tamaño,1,aux.numeros,true);
-			resta1=nueva.resta(this.vector_aprendido.get(i).m);
+			aux=centros.get(i).getMuestras().get(j);
+			nueva=new Matriz(tamaño,1,aux.getNumeros(),true);
+			resta1=nueva.resta(this.vector_aprendido.get(i).getM());
 			resta2=resta1.traspuesta();
 			suma.suma(resta1.multiplica(resta2));
 		}
-		suma.divide(centros.get(i).muestras.size());
+		suma.divide(centros.get(i).getMuestras().size());
 		return suma;
 	}
 	
 	
 	private Matriz calcular_media(int i, Vector<Clase> centros) {
 		
-		int tamaño=centros.get(i).centro.coordenadas;
+		int tamaño=centros.get(i).getCentro().getCoordenadas();
 		Matriz media = new Matriz(tamaño,1);
 		Punto aux;
-		for (int j=0;j<centros.get(i).muestras.size();j++)
+		for (int j=0;j<centros.get(i).getMuestras().size();j++)
 		{
-			aux=centros.get(i).muestras.get(j);
-			media.suma(new Matriz(tamaño,1,aux.numeros,true));
+			aux=centros.get(i).getMuestras().get(j);
+			media.suma(new Matriz(tamaño,1,aux.getNumeros(),true));
 		}
-		media.divide(centros.get(i).muestras.size());
+		media.divide(centros.get(i).getMuestras().size());
 		return(media);
 	}
 	
@@ -95,15 +95,16 @@ public class Estimacion_no_parametrica implements Algoritmos{
 	private double calculaExponente(int numero_clase, int num_muestra, double lado_hiper, Punto punto) {
 		double resultado=-0.5;
 		Punto punto_muestra = centros.get(numero_clase).getMuestras().get(num_muestra);
-		Matriz matriz_muestra = new Matriz (punto_muestra.coordenadas,
-				1,punto_muestra.numeros,true);
+		Matriz matriz_muestra = new Matriz (punto_muestra.getCoordenadas(),
+				1,punto_muestra.getNumeros(),true);
 		Matriz covarianza = vector_aprendido.get(numero_clase).getC();
 		
-		Matriz aux =new Matriz(punto.coordenadas,1,punto.numeros,true);		
+		Matriz aux =new Matriz(punto.getCoordenadas(),1,
+				punto.getNumeros(),true);		
 		Matriz resta=aux.resta(matriz_muestra);
 		aux=resta.traspuesta();
 		Matriz inversa =covarianza.Inverse();
-		if (inversa.error) error= true;
+		if (inversa.getError()) error= true;
 		
 		aux=aux.multiplica(inversa);
 		aux=aux.multiplica(resta);
@@ -111,7 +112,7 @@ public class Estimacion_no_parametrica implements Algoritmos{
 		resultado = resultado * aux.getMatriz()[0][0];
 		return resultado;
 	}
-
+	
 	private double calculaFactor(double lado_hiper, int dimension_hiper, int numero_clase) {
 		Matriz covarianza = vector_aprendido.get(numero_clase).getC();
 		double factor = 0;
@@ -121,7 +122,7 @@ public class Estimacion_no_parametrica implements Algoritmos{
 		factor = f1 * f2;
 		return factor;
 	}
-
+	
 	
 	public static void main(String[] arg)
 	{
@@ -143,17 +144,17 @@ public class Estimacion_no_parametrica implements Algoritmos{
 		Punto ocho = new Punto(3,entrada8);
 		Vector<Clase> centros = new Vector<Clase>();
 		Clase c1 = new Clase();
-		c1.centro=dos;
-		c1.muestras.add(dos);
-		c1.muestras.add(tres);
-		c1.muestras.add(cinco);
-		c1.muestras.add(siete);
+		c1.setCentro(dos);
+		c1.getMuestras().add(dos);
+		c1.getMuestras().add(tres);
+		c1.getMuestras().add(cinco);
+		c1.getMuestras().add(siete);
 		Clase c2 = new Clase();
-		c2.centro=cuatro;
-		c2.muestras.add(seis);
-		c2.muestras.add(siete);
-		c2.muestras.add(ocho);
-		c2.muestras.add(uno);
+		c2.setCentro(cuatro);
+		c2.getMuestras().add(seis);
+		c2.getMuestras().add(siete);
+		c2.getMuestras().add(ocho);
+		c2.getMuestras().add(uno);
 		centros.add(c1);
 		centros.add(c2);
 		Estimacion_no_parametrica prueba = new Estimacion_no_parametrica();
@@ -174,5 +175,9 @@ public class Estimacion_no_parametrica implements Algoritmos{
 	
 	public void setVector_aprendido(LinkedList<ConjuntoM_C> vector_aprendido) {
 		this.vector_aprendido = vector_aprendido;
+	}
+	
+	public boolean getError(){
+		return error;
 	}
 }

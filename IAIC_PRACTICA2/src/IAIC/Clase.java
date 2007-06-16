@@ -4,8 +4,8 @@ import java.util.Vector;
 
 public class Clase {
 
-	public Vector<Punto> muestras;
-	public Punto centro;
+	private Vector<Punto> muestras;
+	private Punto centro;
 	
 	public Clase()
 	{
@@ -31,23 +31,23 @@ public class Clase {
 	
 	public void nuevoCentro()
 	{
-		double [] sumas = new double[centro.coordenadas];
-		for (int j=0;j<centro.coordenadas;j++)
+		double [] sumas = new double[centro.getCoordenadas()];
+		for (int j=0;j<centro.getCoordenadas();j++)
 		{
 			sumas[j]=0.0;
 		}
 		for (int i=0;i<muestras.size();i++)
 		{
-			for (int j=0;j<centro.coordenadas;j++)
+			for (int j=0;j<centro.getCoordenadas();j++)
 			{
-				sumas[j]+=muestras.elementAt(i).numeros[j];
+				sumas[j]+=muestras.elementAt(i).getNumeros()[j];
 			}
 		}
-		for (int j=0;j<centro.coordenadas;j++)
+		for (int j=0;j<centro.getCoordenadas();j++)
 		{
 			sumas[j]/=muestras.size();
 		}
-		this.centro.numeros=sumas;
+		this.centro.setNumeros(sumas);
 	}
 
 }

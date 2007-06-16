@@ -82,10 +82,10 @@ public class Self_Organizinig_Map implements Algoritmos {
 	private void inicializa(Vector<Punto> muestras, Vector<Clase> centros2) {
 		for (int i=0;i<centros2.size();i++)
 		{
-			this.centros.add(centros2.get(i).centro);
-			for (int j=0;j<centros2.get(i).muestras.size();j++)
+			this.centros.add(centros2.get(i).getCentro());
+			for (int j=0;j<centros2.get(i).getMuestras().size();j++)
 			{
-				muestras.add(centros2.get(i).muestras.get(j));
+				muestras.add(centros2.get(i).getMuestras().get(j));
 			}
 		}
 	}
@@ -135,15 +135,15 @@ public class Self_Organizinig_Map implements Algoritmos {
 		 Punto nuevo1 = new Punto(2,nuevo);
 		 Vector<Clase> centros = new Vector<Clase>();
 		 Clase c1 = new Clase();
-		 c1.centro=centro11;
-		 c1.muestras.add(dos);
-		 c1.muestras.add(tres);
-		 c1.muestras.add(cuatro);
-		 c1.muestras.add(cinco);
+		 c1.setCentro(centro11);
+		 c1.getMuestras().add(dos);
+		 c1.getMuestras().add(tres);
+		 c1.getMuestras().add(cuatro);
+		 c1.getMuestras().add(cinco);
 		 Clase c2 = new Clase();
-		 c2.centro=centro12;
-		 c2.muestras.add(seis);
-		 c2.muestras.add(siete);
+		 c2.setCentro(centro12);
+		 c2.getMuestras().add(seis);
+		 c2.getMuestras().add(siete);
 		 centros.add(c1);
 		 centros.add(c2);
 		 Self_Organizinig_Map prueba = new Self_Organizinig_Map(1.0, 0.8, 5, 0.001);

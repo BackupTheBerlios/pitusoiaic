@@ -2,8 +2,8 @@ package IAIC;
 
 public class Punto {
 
-	int coordenadas;
-	double []numeros;
+	private int coordenadas;
+	private double []numeros;
 	
 	public Punto(int coordenadas,double[] lista)
 	{

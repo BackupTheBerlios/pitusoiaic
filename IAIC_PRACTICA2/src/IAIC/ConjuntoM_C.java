@@ -2,11 +2,11 @@ package IAIC;
 
 public class ConjuntoM_C {
 	
-	Matriz c;
+	private Matriz c;
 	
-	Matriz m;
+	private Matriz m;
 	
-	int clase;
+	private int clase;
 
 	public ConjuntoM_C()
 	{

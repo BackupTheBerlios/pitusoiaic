@@ -37,17 +37,17 @@ public class Lloyd implements Algoritmos {
 	public int clase(Punto punto) {
 		Vector<Punto> v = new Vector<Punto>();
 		v.add(punto);
-		return clase(1,0,v);
+		return clase(0.1,1,v);
 	}
 	
-	public int clase(double factor, int k,Vector<Punto> puntos){
+	public int clase(double factor, int numero_puntos,Vector<Punto> puntos){
 		if (v_centros.size() == 0){
 			System.out.println("No hay ningun punto con el que comparar.");
 			return 0;
 		}
 		int clase=0;
 		Vector<Punto> aux = new Vector<Punto>(v_centros);		
-		for (int i=0;i<k;i++){
+		for (int i=0;i<numero_puntos;i++){
 			clase = this.getClase(puntos.get(i),aux);
 			actualizaVector(factor, clase,puntos.get(i),aux);
 		}		
@@ -58,10 +58,10 @@ public class Lloyd implements Algoritmos {
 	private void actualizaVector(double factor,int clase, Punto punto,
 			Vector<Punto> vector) {
 		Punto p = vector.get(clase);
-		Punto paux = new Punto(p.coordenadas);
-		for (int i=0;i<p.coordenadas;i++){
-			paux.numeros[i] = p.numeros[i]
-			   - (factor*(p.numeros[i] - punto.numeros[i])); 
+		Punto paux = new Punto(p.getCoordenadas());
+		for (int i=0;i<p.getCoordenadas();i++){
+			paux.getNumeros()[i] = p.getNumeros()[i]
+			   - (factor*(p.getNumeros()[i] - punto.getNumeros()[i])); 
 		}
 		vector.set(clase,paux);
 	}

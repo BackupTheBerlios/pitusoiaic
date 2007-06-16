@@ -4,9 +4,9 @@ import java.util.Vector;
 
 public class Cuantizacion_vectorial {
 
-	int clases;
-	Vector<Clase> centros;
-	double umbral;
+	private int clases;
+	private Vector<Clase> centros;
+	private double umbral;
 	
 	public Cuantizacion_vectorial(double umbral)
 	{
@@ -21,8 +21,8 @@ public class Cuantizacion_vectorial {
 		Clase nueva = new Clase();
 		centros.addElement(nueva);
 		
-		centros.elementAt(0).centro=puntos.elementAt(0).copia();
-		centros.elementAt(0).muestras.add(puntos.elementAt(0));
+		centros.elementAt(0).setCentro(puntos.elementAt(0).copia());
+		centros.elementAt(0).getMuestras().add(puntos.elementAt(0));
 		int clase=0;
 		for (int i=1;i<puntos.size();i++)
 		{
@@ -32,13 +32,13 @@ public class Cuantizacion_vectorial {
 				clases++;
 				nueva = new Clase();
 				centros.addElement(nueva);
-				centros.elementAt(clase).centro=puntos.elementAt(i).copia();
-				centros.elementAt(clase).muestras.add(puntos.elementAt(i));
+				centros.elementAt(clase).setCentro(puntos.elementAt(i).copia());
+				centros.elementAt(clase).getMuestras().add(puntos.elementAt(i));
 
 			}
 			else
 			{
-				centros.elementAt(clase).muestras.add(puntos.elementAt(i));
+				centros.elementAt(clase).getMuestras().add(puntos.elementAt(i));
 				centros.elementAt(clase).nuevoCentro();
 			}
 		}
@@ -46,12 +46,12 @@ public class Cuantizacion_vectorial {
 	
 	public int calculadistancias(int indice,Vector<Punto> puntos)
 	{
-		double distancia=centros.elementAt(0).centro.distancia(puntos.elementAt(indice));
+		double distancia=centros.elementAt(0).getCentro().distancia(puntos.elementAt(indice));
 		double aux=0.0;
 		int clase=0;
 		for (int j=0;j<this.clases;j++)
 		{
-			aux=centros.elementAt(j).centro.distancia(puntos.elementAt(indice));
+			aux=centros.elementAt(j).getCentro().distancia(puntos.elementAt(indice));
 			if (aux<=distancia)
 			{
 				clase=j;
@@ -100,10 +100,10 @@ public class Cuantizacion_vectorial {
 		String nueva= new String("\n");
 		for (int i=0;i<this.clases;i++)
 		{
-			nueva+=" CLASE "+(i+1)+" : REPRENSENTANTE "+this.centros.get(i).centro.toString()+"\n "+"MUESTRAS DE LA CLASE : ";
+			nueva+=" CLASE "+(i+1)+" : REPRENSENTANTE "+this.centros.get(i).getCentro().toString()+"\n "+"MUESTRAS DE LA CLASE : ";
 			for (int j=0;j<this.centros.get(i).getMuestras().size();j++)
 			{
-				nueva+=this.centros.get(i).muestras.get(j).toString()+"  ";
+				nueva+=this.centros.get(i).getMuestras().get(j).toString()+"  ";
 			}
 			nueva+="\n";
 		}
