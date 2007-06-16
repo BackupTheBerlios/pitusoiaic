@@ -366,6 +366,7 @@ public class Ventana extends JFrame{
 		else if (estrategia.equalsIgnoreCase("Self Organizing Map"))
 		{
 			clase=this.sof.clase(this.preguntado);
+			clase++;
 			respuesta="\n El punto "+this.preguntado.toString()+" pertenece a la clase "+clase+" ."; 
 		}
 		System.out.println(this.respuesta);
